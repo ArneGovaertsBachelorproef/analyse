@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Databases
+*.db
+
+# Google Cloud
+bamboo-name-341317-87e826320871.json
