@@ -1,10 +1,11 @@
 import os
 import io
+import pyphen
 import sqlite3
 from google.cloud import speech
 
 class TextBased():
-    def get_text(audio_file_name) -> str:
+    def transcript(audio_file_name) -> str:
         con = sqlite3.connect('elderspeak_detect.db')
         cur = con.cursor()
 
@@ -31,7 +32,7 @@ class TextBased():
         audio = speech.RecognitionAudio(content=content)
         config = speech.RecognitionConfig(
             language_code='nl-BE',
-            alternative_language_codes=['nl-NL', 'fr-BE', 'fr-FR']
+            alternative_language_codes=['nl-NL', 'fr-BE', 'fr-FR'] # kijken of dit een verbetering is
         )
 
         response = client.recognize(config=config, audio=audio)
@@ -52,28 +53,70 @@ class TextBased():
         return transcript
 
     def vermindering_grammaticale_complexiteit(audio_file_name) -> bool:
-        # a.d.h.v. Cito Leesindex Technisch Lezen of Leesindex A
-        # CILT = 114.49 + 0.28 × fwr − 12.33 × c/w met fwr = frequent word ratio en c/w = characters per word
-        # A = 195 − 2 × w/sen − 66.7 × syl/w met w/sen = words per sentence en syl/w = syllables per word
-        # enkel w/sen
-        # -> w/sen is vermoedelijk beste maatstaaf, maar vereist 100% correcte speech to text!
-        # long word ratio
-        raise NotImplemented
+        # met woordlengte_ratio
+        return TextBased.woordlengte_ratio(audio_file_name) < 0.05 # aanpassen -> vergelijken tussen leeftijdsgenoten en naar ouderen
+
+    def woordlengte_ratio(audio_file_name) -> float:
+        # long word ratio =  the amount of words that contain more than three syllables divided by the total amount of words
+        dic = pyphen.Pyphen(lang='nl_NL') # Pyphen kent geen Belgisch Nederlands
+        more_than_three_syllables = 0.0
+
+        transcript = TextBased.transcript(audio_file_name).lower().split()
+
+        for word in transcript:
+            letterprepen = dic.inserted(word).split('-')
+            print(letterprepen)
+            if len(letterprepen) > 2:
+                more_than_three_syllables += 1
+
+        return more_than_three_syllables / len(transcript)
+
+    def cilt(audio_file_name) -> float: # correct? bruikaar?
+        # CILT =  114.49 + 0.28 × freq77 − 12.33 × avgwordlen
+        transcript = TextBased.transcript(audio_file_name).lower().split()
+        freq77 = 0.0
+        avgwordlen = 0.0
+
+        con = sqlite3.connect('elderspeak_detect.db')
+        cur = con.cursor()
+
+        for word in transcript:
+            avgwordlen += len(word)
+
+            number = cur.execute("SELECT ((SELECT number FROM freq77 where word = :word) * 10000 / count(*)) * 0.0001 FROM freq77;", {
+                'word': word
+            }).fetchone()[0]
+
+            if number is not None:
+                freq77 += number
+            else:
+                freq77 += 1.0
+
+        avgwordlen /= len(transcript)
+
+        con.close()
+        return 114.49 + 0.28 * freq77 - 12.33 * avgwordlen
 
     def verkleinwoorden(audio_file_name) -> bool:
         # eindigen op -je, -tje, -etje, -pje, -kje, -tsje, -jes, -tjes, -etjes, -pjes, -kjes, -tsjes, -ke of -ken
-        # filteren met woordenlijst -> nog op te stellen, zie: https://github.com/OpenTaal/opentaal-wordlist
+        # filteren met woordenlijst -> nog op te stellen, zie: https://github.com/OpenTaal/opentaal-wordlist en lijst voornamen en plaatsnamen
         # tellen
         # zie ook vorige BP's
         raise NotImplemented
 
     def collectieve_voornaamwoorden(audio_file_name) -> bool:
-        # tellen
-        raise NotImplemented
+        return TextBased.aantal_collectieve_voornaamwoorden(audio_file) > 3 # aanpassen -> kijken of dit echt nuttig is
+
+    def aantal_collectieve_voornaamwoorden(audio_file) -> int:
+        text = TextBased.transcript(audio_file_name).lower().split()
+        return text.count('we')
 
     def bevestigende_tussenwerpsels(audio_file_name) -> bool:
-        # tellen
-        raise NotImplemented
+        return TextBased.aantal_bevestigende_tussenwerpsels(audio_file_name) > 3 # aanpassen -> vergelijken tussen leeftijdsgenoten en naar ouderen
+
+    def aantal_bevestigende_tussenwerpsels(audio_file_name) -> int:
+        text = TextBased.transcript(audio_file_name).lower().split()
+        return text.count('hé') + text.count('voilà')
 
     def herhalende_zinnen(audio_file_name) -> bool:
         # zin per zin verwerken en terugkijken -> zie Standaert

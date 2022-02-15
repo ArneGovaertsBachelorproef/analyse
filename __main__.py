@@ -7,13 +7,12 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-audio_file_name = 'leeftijdsgenoot.flac'
-print(TextBased.get_text(audio_file_name))
-
-
+audio_file_name = 'oudere.flac'
+TextBased.transcript(audio_file_name)
+print(TextBased.woordlengte_ratio(audio_file_name))
 
 # tasks = [
-#    [audio_file_name, 'langzaam_spreken'],
+#     [audio_file_name, 'langzaam_spreken'],
 #     [audio_file_name, 'verhoogd_stemvolume'],
 #     [audio_file_name, 'vermindering_grammaticale_complexiteit'],
 #     [audio_file_name, 'verkleinwoorden'],
@@ -22,7 +21,7 @@ print(TextBased.get_text(audio_file_name))
 #     [audio_file_name, 'verhoging_toonhoogte'],
 #     [audio_file_name, 'herhalende_zinnen']
 # ]
-# 
+ 
 # pool = ThreadPool()
 # results = pool.map(Worker.do, tasks)
 # pool.close()

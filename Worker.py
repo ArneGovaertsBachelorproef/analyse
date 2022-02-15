@@ -3,7 +3,7 @@ from PraatBased import PraatBased
 
 class Worker():
     def do(task_array):
-       return {
+       print({
             'langzaam_spreken': PraatBased.langzaam_spreken,
             'verhoogd_stemvolume': PraatBased.verhoogd_stemvolume,
             #'verhoogd_stemvolume': MachineLearningBased.verhoogd_stemvolume,
@@ -14,4 +14,4 @@ class Worker():
             'bevestigende_tussenwerpsels': TextBased.bevestigende_tussenwerpsels,
             'verhoging_toonhoogte': PraatBased.verhoogde_toonhoogte,
             'herhalende_zinnen': TextBased.herhalende_zinnen
-       }[task_array[1]](task_array[0])
+       }[task_array[1]](task_array[0]))
