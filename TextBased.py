@@ -104,6 +104,19 @@ class TextBased():
         # zie ook vorige BP's
         raise NotImplemented
 
+    def aantal_verkleinwoorden(audio_file_name) -> int:
+        transcript = TextBased.transcript(audio_file_name).lower().split()
+        count = 0
+
+        con = sqlite3.connect('elderspeak_detect.db')
+        cur = con.cursor()
+
+        # for woord in transcript:
+        #     if woord[-2:] == 'je' or woord[-3:] == 'jes' or woord[-2:] == 'ke' or woord[-3:] == 'ken':    
+
+        con.close()
+        return count
+
     def collectieve_voornaamwoorden(audio_file_name) -> bool:
         return TextBased.aantal_collectieve_voornaamwoorden(audio_file) > 3 # aanpassen -> kijken of dit echt nuttig is
 
