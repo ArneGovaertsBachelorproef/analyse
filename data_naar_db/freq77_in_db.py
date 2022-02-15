@@ -1,11 +1,11 @@
 import sqlite3
 
-con = sqlite3.connect('elderspeak_detect.db')
+con = sqlite3.connect('../elderspeak_detect.db')
 cur = con.cursor()
 
 cur.execute("""CREATE TABLE IF NOT EXISTS freq77 (
-    number  INTEGER PRIMARY KEY AUTOINCREMENT,
-    word    TEXT NOT NULL
+    nummer  INTEGER PRIMARY KEY AUTOINCREMENT,
+    woord    TEXT NOT NULL
 );""")
 
 with open('freq77.txt') as freq77_file:
