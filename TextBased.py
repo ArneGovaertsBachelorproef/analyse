@@ -37,13 +37,12 @@ class TextBased():
     def woordlengte_ratio(transcript) -> float:
         # long word ratio =  the amount of words that contain more than three syllables divided by the total amount of words
         dic = pyphen.Pyphen(lang='nl_NL') # Pyphen kent geen Belgisch Nederlands
-        more_than_three_syllables = 0.0
+        drie_of_meer_lettergrepen = 0.0
 
         woorden = transcript.lower().split()
 
         for woord in woorden:
-            letterprepen = dic.inserted(word).split('-')
-            print(letterprepen)
+            letterprepen = dic.inserted(woord).split('-')
             if len(letterprepen) > 2:
                 drie_of_meer_lettergrepen += 1
 

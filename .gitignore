@@ -133,3 +133,6 @@ dmypy.json
 
 # Google Cloud
 bamboo-name-341317-87e826320871.json
+
+# audio files
+audio_files/*
