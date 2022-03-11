@@ -81,7 +81,7 @@ def do(audio_file):
         # verhoogd stemvolume (voice volume) met PRAAT -> geluidsniveau
         geluidsniveau = PraatBased.geluidsniveau_in_db(audio_file_path)
 
-        # verhoogd stemvolume met machine learning -> nuttig?
+        # verhoogd stemvolume met machine learning
 
 
         # vermindering grammaticale complexiteit met speech to text en formule
@@ -92,6 +92,9 @@ def do(audio_file):
 
 
         # verkleinwoorden met speech to text en tellen
+
+
+        # verkleinwoorden met speech to text en NLP 
 
 
         # collectieve voornaamwoorden met speech to text en tellen
