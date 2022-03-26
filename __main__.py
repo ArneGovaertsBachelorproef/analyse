@@ -1,4 +1,9 @@
-# see: https://chriskiehl.com/article/parallelism-in-one-line
+# fase 0 = inlezen data
+# fase 1 = praat
+# fase 2 = speech to text
+# fase 3 = analyse tekst
+# fase 4 = output data als csv
+fase = 0
 
 # ========================================================================= #
 #  Imports                                                                  #
@@ -21,17 +26,11 @@ logging.basicConfig(level=logging.DEBUG)
 # ========================================================================= #
 #  Global variables                                                         #
 # ========================================================================= #
+
 database        = 'elderspeak_detect.db'
 input_data_file = '_dataverza.csv'
 output_dir      = 'output'
 aantal_pools    = 1
-
-# fase 0 = inlezen data
-# fase 1 = praat
-# fase 2 = speech to text
-# fase 3 = analyse tekst
-# fase 4 = output data als csv
-fase = 1
 
 # ========================================================================= #
 #  Procedures                                                               #
@@ -59,7 +58,11 @@ def create_tables(con: sqlite3.Connection):
 
     cur.execute('''CREATE TABLE IF NOT EXISTS audio (
         audio_id                                        INTEGER PRIMARY KEY AUTOINCREMENT,
-        audio_bestand                                   TEXT NOT NULL
+        audio_bestand                                   TEXT NOT NULL,
+        input_data_ok                                   BOOLEAN DEFAULT 0,
+        praat_analyse_ok                                BOOLEAN DEFAULT 0,
+        teksten_ok                                      BOOLEAN DEFAULT 0,
+        tekst_analyse_ok                                BOOLEAN DEFAULT 0
     );''')
 
     cur.execute('''CREATE TABLE IF NOT EXISTS input_data (
@@ -74,18 +77,10 @@ def create_tables(con: sqlite3.Connection):
         browser                                         TEXT,
         os                                              TEXT,
         platform                                        TEXT,
-        leeftijdsgenoot_opname                          INTEGER,
-        oudere_opname                                   INTEGER,
+        leeftijdsgenoot_opname                          INTEGER NOT NULL,
+        oudere_opname                                   INTEGER NOT NULL,
         FOREIGN KEY(leeftijdsgenoot_opname)             REFERENCES audio(audio_id),
         FOREIGN KEY(oudere_opname)                      REFERENCES audio(audio_id)
-    );''')
-
-    cur.execute('''CREATE TABLE IF NOT EXISTS teksten (
-        tekst_id                                        INTEGER PRIMARY KEY AUTOINCREMENT,
-        tekst                                           TEXT,
-        methode                                         TEXT,
-        audio_id                                        INTEGER NOT NULL,
-        FOREIGN KEY(audio_id)                           REFERENCES audio(audio_id)
     );''')
 
     cur.execute('''CREATE TABLE IF NOT EXISTS praat_resultaten (
@@ -97,6 +92,14 @@ def create_tables(con: sqlite3.Connection):
         FOREIGN KEY(audio_id)                           REFERENCES audio(audio_id)        
     );''')
 
+    cur.execute('''CREATE TABLE IF NOT EXISTS teksten (
+        tekst_id                                        INTEGER PRIMARY KEY AUTOINCREMENT,
+        tekst                                           TEXT,
+        methode                                         TEXT,
+        audio_id                                        INTEGER NOT NULL,
+        FOREIGN KEY(audio_id)                           REFERENCES audio(audio_id)
+    );''')
+
     cur.execute('''CREATE TABLE IF NOT EXISTS tekst_resultaten (
         resultaat_id                                    INTEGER PRIMARY KEY AUTOINCREMENT,
         cilt                                            REAL,
@@ -104,7 +107,9 @@ def create_tables(con: sqlite3.Connection):
         aantal_collectieve_voornaamwoorden              INTEGER,
         aantal_bevestigende_tussenwerpsels              INTEGER,
         audio_id                                        INTEGER NOT NULL,
-        FOREIGN KEY(audio_id)                           REFERENCES audio(audio_id)    
+        tekst_id                                        INTEGER NOT NULL,
+        FOREIGN KEY(audio_id)                           REFERENCES audio(audio_id),
+        FOREIGN KEY(tekst_id)                           REFERENCES audio(tekst_id)   
     );''')
 
 def read_input_data_into_db(con: sqlite3.Connection, input_data_file: str):
@@ -145,10 +150,14 @@ def read_input_data_into_db(con: sqlite3.Connection, input_data_file: str):
                         'leeftijdsgenoot_opname':   leeftijdsgenoot_opname,
                         'oudere_opname':            oudere_opname
                     })
+                
+                cur.execute('UPDATE audio SET input_data_ok = true WHERE audio_id in (?,?)', [
+                    leeftijdsgenoot_opname, oudere_opname
+                ])
                 con.commit()
             
             line_count += 1
-    print('Aantal lijnen ingelezen: ' + str(line_count - 1))
+    logging.info('Aantal lijnen ingelezen: ' + str(line_count - 1))
 
 def ophalen_bestandsnamen(con: sqlite3.Connection) -> list:
     bestanden = []
@@ -308,7 +317,7 @@ def do(audio_file):
 #  Main program                                                             #
 # ========================================================================= #
 start_time = time.time()
-loggin.info('Start van fase ' + str(fase))
+logging.info('Start van fase ' + str(fase))
 
 con = create_connection(database)
 if con is None:
