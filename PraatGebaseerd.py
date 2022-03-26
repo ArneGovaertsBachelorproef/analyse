@@ -26,11 +26,17 @@ class PraatGebaseerd:
         self.__audio_file_path = str(nieuw_pad.absolute())
     
     def geluidsniveau_in_db(self) -> float:             # intensity 
+        """ opvragen van het geluidsniveau uitgedrukt in decibel
+        :return float: geluidsniveau
+        """
         sound = parselmouth.Sound(self.__audio_file_path)
         intensiteit = sound.to_intensity()
         return intensiteit.get_average()
     
     def spraaksnelheid_in_sylps(self) -> float:         # speech rate
+        """ opvragen van de spraaksnelheid uitgedrukt in syllables per seconde
+        :return float: spraaksnelheid
+        """
         # zie: https://osf.io/r8jau/?ref=499aefb361abec341bcebd133699270d3d66f0d5
         # en https://github.com/Voice-Lab/VoiceLab/blob/main/Voicelab/toolkits/Voicelab/MeasureSpeechRateNode.py        
         silencedb = -25
@@ -126,5 +132,8 @@ class PraatGebaseerd:
         return voicedcount / originaldur
     
     def gemiddelde_toonhoogte_in_hz(self) -> float:      # pitch
+        """ opvragen van de fundamentele frequentie uitgedrukt in hertz
+        :return float: toonhoogte
+        """
         sound = parselmouth.Sound(self.__audio_file_path)
         return call(sound.to_pitch(), 'Get mean', 0, 0, 'Hertz')
