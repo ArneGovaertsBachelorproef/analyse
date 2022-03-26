@@ -23,10 +23,10 @@ class PraatGebaseerd:
         oud_pad = Path(audio_file_path)
         nieuw_pad = oud_pad.with_suffix('.wav')
         system('ffmpeg -y -v info -i ' + str(oud_pad.absolute()) + ' ' + str(nieuw_pad.absolute()))
-        self.audio_file_path = str(nieuw_pad.absolute())
+        self.__audio_file_path = str(nieuw_pad.absolute())
     
     def geluidsniveau_in_db(self) -> float:             # intensity 
-        sound = parselmouth.Sound(self.audio_file_path)
+        sound = parselmouth.Sound(self.__audio_file_path)
         intensiteit = sound.to_intensity()
         return intensiteit.get_average()
     
@@ -37,7 +37,7 @@ class PraatGebaseerd:
         mindip = 2
         minpause = 0.3
 
-        sound = parselmouth.Sound(self.audio_file_path)
+        sound = parselmouth.Sound(self.__audio_file_path)
         originaldur = sound.get_total_duration()
         intensity = sound.to_intensity(50)
         start = call(intensity, 'Get time from frame number', 1)
@@ -126,5 +126,5 @@ class PraatGebaseerd:
         return voicedcount / originaldur
     
     def gemiddelde_toonhoogte_in_hz(self) -> float:      # pitch
-        sound = parselmouth.Sound(self.audio_file_path)
+        sound = parselmouth.Sound(self.__audio_file_path)
         return call(sound.to_pitch(), 'Get mean', 0, 0, 'Hertz')
