@@ -5,30 +5,39 @@ from os import system
 from pathlib import Path
 from parselmouth.praat import call
 
-class PraatBased:
-    def to_wav(audio_file_path, ffmpeg=True):
-        old_path = Path(audio_file_path)
-        new_path = old_path.with_suffix('.wav')
-        if ffmpeg:
-            system('ffmpeg -y -i ' + str(old_path.absolute()) + ' ' + str(new_path.absolute()))
-        return str(new_path.absolute())  
+class PraatGebaseerd:
+    """ klasse die alle op PRAAT gebaseerde resultaten omvat
+
+    methodes:
+        * geluidsniveau_in_db() -> float
+        * spraaksnelheid_in_sylps() -> float
+        * gemiddelde_toonhoogte_in_hz(self) -> float
     
-    def geluidsniveau_in_db(audio_file_path) -> float:             # intensity 
-        audio_file_path = PraatBased.to_wav(audio_file_path, False)
-        sound = parselmouth.Sound(audio_file_path)
+    constructor:
+        :param audio_file_path: bestandsnaam als string
+    """
+    def __init__(self, audio_file_path: str):
+        """ constructor
+        :param audio_file_path: bestandsnaam als string
+        """
+        oud_pad = Path(audio_file_path)
+        nieuw_pad = oud_pad.with_suffix('.wav')
+        system('ffmpeg -y -v info -i ' + str(oud_pad.absolute()) + ' ' + str(nieuw_pad.absolute()))
+        self.audio_file_path = str(nieuw_pad.absolute())
+    
+    def geluidsniveau_in_db(self) -> float:             # intensity 
+        sound = parselmouth.Sound(self.audio_file_path)
         intensiteit = sound.to_intensity()
         return intensiteit.get_average()
     
-    def spraaksnelheid_in_sylps(audio_file_path) -> float:            # speech rate
+    def spraaksnelheid_in_sylps(self) -> float:         # speech rate
         # zie: https://osf.io/r8jau/?ref=499aefb361abec341bcebd133699270d3d66f0d5
-        # en https://github.com/Voice-Lab/VoiceLab/blob/main/Voicelab/toolkits/Voicelab/MeasureSpeechRateNode.py
-        audio_file_path = PraatBased.to_wav(audio_file_path, False)
-        
+        # en https://github.com/Voice-Lab/VoiceLab/blob/main/Voicelab/toolkits/Voicelab/MeasureSpeechRateNode.py        
         silencedb = -25
         mindip = 2
         minpause = 0.3
 
-        sound = parselmouth.Sound(audio_file_path)
+        sound = parselmouth.Sound(self.audio_file_path)
         originaldur = sound.get_total_duration()
         intensity = sound.to_intensity(50)
         start = call(intensity, 'Get time from frame number', 1)
@@ -116,7 +125,6 @@ class PraatBased:
 
         return voicedcount / originaldur
     
-    def gemiddelde_toonhoogte_in_hz(audio_file_path) -> float:      # pitch
-        audio_file_path = PraatBased.to_wav(audio_file_path, False)
-        sound = parselmouth.Sound(audio_file_path)
+    def gemiddelde_toonhoogte_in_hz(self) -> float:      # pitch
+        sound = parselmouth.Sound(self.audio_file_path)
         return call(sound.to_pitch(), 'Get mean', 0, 0, 'Hertz')

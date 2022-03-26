@@ -4,7 +4,7 @@ import pyphen
 import sqlite3
 from google.cloud import speech
 
-class TextBased():
+class TekstGebaseerd:
     def transcript(audio_file, dialect_opvangen=True) -> str:
         # speech to text met Google Cloud        
         client = speech.SpeechClient()
