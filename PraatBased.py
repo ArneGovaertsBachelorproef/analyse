@@ -19,7 +19,7 @@ class PraatBased:
         intensiteit = sound.to_intensity()
         return intensiteit.get_average()
     
-    def spraaksnelheid_in_wps(audio_file_path) -> float:            # speech rate
+    def spraaksnelheid_in_sylps(audio_file_path) -> float:            # speech rate
         # zie: https://osf.io/r8jau/?ref=499aefb361abec341bcebd133699270d3d66f0d5
         # en https://github.com/Voice-Lab/VoiceLab/blob/main/Voicelab/toolkits/Voicelab/MeasureSpeechRateNode.py
         audio_file_path = PraatBased.to_wav(audio_file_path, False)
