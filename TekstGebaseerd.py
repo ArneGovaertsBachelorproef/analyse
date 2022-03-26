@@ -2,37 +2,11 @@ import os
 import io
 import pyphen
 import sqlite3
-from google.cloud import speech
+
+
 
 class TekstGebaseerd:
-    def transcript(audio_file, dialect_opvangen=True) -> str:
-        # speech to text met Google Cloud        
-        client = speech.SpeechClient()
-
-        with io.open(audio_file, 'rb') as speech_file:
-            content = speech_file.read()
-
-        audio = speech.RecognitionAudio(content=content)
-
-        if dialect_opvangen:
-            # nl-BE als hoofdtaal, nl-NL, fr-BE en fr-FR om dialect op te vangen
-            config = speech.RecognitionConfig(
-                language_code='nl-BE',
-                alternative_language_codes=['nl-NL', 'fr-BE', 'fr-FR'] # dialect hiermee opgelost?
-            )
-        else:
-            # uitsluitend nl-BE
-            config = speech.RecognitionConfig(
-                language_code='nl-BE'
-            )
-
-        response = client.recognize(config=config, audio=audio)
-
-        transcript = ''
-        for result in response.results:
-            transcript = transcript + str(result.alternatives[0].transcript)
-
-        return transcript
+    
 
     def woordlengte_ratio(transcript) -> float:
         # long word ratio =  the amount of words that contain more than three syllables divided by the total amount of words
