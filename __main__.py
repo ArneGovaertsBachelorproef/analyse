@@ -10,6 +10,7 @@ import logging
 import datetime
 
 from dotenv import load_dotenv
+from Spraakherkenning import Spraakherkenning, Methode
 from TekstGebaseerd import TekstGebaseerd
 from PraatGebaseerd import PraatGebaseerd
 from botocore.exceptions import ClientError
@@ -22,12 +23,6 @@ logging.basicConfig(level=logging.INFO)
 # ========================================================================= #
 #  Global variables                                                         #
 # ========================================================================= #
-# fase 1 = praat
-# fase 2 = speech to text
-# fase 3 = analyse tekst
-# fase 4 = output data als csv
-fase = 1
-
 db_file        = 'elderspeak_detect.db'
 input_bestand   = '_dataverza.csv'
 output_dir      = 'output'
@@ -257,9 +252,18 @@ def doe_analyse_praat(audio_file: str):
 
     con                         = maak_connectie(db_file)
     audio_id                    = audio_id_op_basis_van_bestand(con, audio_file)
-
     audio_file_path             = os.path.join(os.path.dirname(os.path.abspath(__file__)),'audio_files', audio_file)
     
+    cur.execute('SELECT praat_analyse_ok FROM audio WHERE audio_bestand = ?',  [ audio_file ])
+    count = 0
+    rijen1 = cur.fetchall()
+    for rij1 in rijen1:
+        if rij1[0]:
+            logging.info('Skip: ' + audio_file + ' met id = ' + str(audio_id))
+            count += 1
+    if count > 0:
+        return
+
     try:
         praat                       = PraatGebaseerd(audio_file_path)
         geluidsniveau_in_db         = praat.geluidsniveau_in_db()
@@ -282,7 +286,40 @@ def doe_analyse_praat(audio_file: str):
         logging.error(str(e))
 
 def doe_speech_to_text(audio_file: str):
-    pass
+    con                         = maak_connectie(db_file)
+    audio_id                    = audio_id_op_basis_van_bestand(con, audio_file)
+
+    cur.execute('SELECT teksten_ok FROM audio WHERE audio_bestand = ?',  [ audio_file ])
+    count = 0
+    rijen1 = cur.fetchall()
+    for rij1 in rijen1:
+        if rij1[0]:
+            logging.info('Skip: ' + audio_file + ' met id = ' + str(audio_id))
+            count += 1
+    if count > 0:
+        return
+
+    audio_file_path             = os.path.join(os.path.dirname(os.path.abspath(__file__)),'audio_files', audio_file)
+    spraakherkenning            = Spraakherkenning(audio_file_path)
+
+    try:
+        google_enkel_nl_be          = spraakherkenning.tekst(Methode.GOOGLE_ENKEL_NL_BE)
+        google_dialect_opvangen     = spraakherkenning.tekst(Methode.GOOGLE_NL_FR)
+        vosk                        = spraakherkenning.tekst(Methode.VOSK)
+
+        cur = con.cursor()
+        records = [
+            (google_enkel_nl_be,        'GOOGLE_ENKEL_NL_BE',   audio_id),
+            (google_dialect_opvangen,   'GOOGLE_NL_FR',         audio_id),
+            (vosk,                      'VOSK',                 audio_id)
+        ]
+        cur.executemany('INSERT INTO teksten (tekst,methode,audio_id) VALUES (?,?,?);', records)
+        cur.execute('UPDATE audio SET teksten_ok = true WHERE audio_id = ?', [audio_id])
+        con.commit()
+
+        logging.info('Klaar met ' + audio_file)
+    except google.api_core.exceptions.InvalidArgument as e:
+        logging.error(str(e))
 
 def doe_analyse_tekst(audio_file: str):
     pass
@@ -291,36 +328,40 @@ def doe_analyse_tekst(audio_file: str):
 #  Hoofdprogramma                                                           #
 # ========================================================================= #
 start_time = time.time()
-logging.info('Start van fase ' + str(fase))
 
 con = maak_connectie(db_file)
 if con is None:
     raise Exception('Connection is None')
     exit
 
-# fase 0: setup (altijd)
+# fase 0 = ophalen bestanden en inlezen input data
 maak_tabellen(con)
 lees_input_data(con, input_bestand)
 ophalen_audio_bestanden(con)
 bestanden = ophalen_bestandsnamen(con)
+logging.info('Klaar met fase 0 na ' + str(round(time.time() - start_time, 2)) + 's')
 
-# fase 4: resultaat exporteren als csv (single thread)
-if fase == 4:
-    export_data_als_csv(con)
-else:
-    pool = ThreadPool(aantal_threads)
-    
-    # fase 1: analyse met PRAAT
-    if fase   == 1:
-        pool.map(doe_analyse_praat, bestanden)
-    # fase 2: spraakherkenning
-    elif fase == 2:
-        pool.map(doe_speech_to_text, bestanden)
-    # fase 3: analyse op tekst
-    elif fase == 3:
-        pool.map(doe_analyse_tekst, bestanden)
+# fase 1 = analyse met PRAAT
+pool = ThreadPool(aantal_threads)
+pool.map(doe_analyse_praat, bestanden)
+pool.close()
+pool.join()
+logging.info('Klaar met fase 1 na ' + str(round(time.time() - start_time, 2)) + 's')
 
-    pool.close()
-    pool.join()
+# fase 2 = speech to text
+pool = ThreadPool(aantal_threads)
+pool.map(doe_speech_to_text, bestanden)
+pool.close()
+pool.join()
+logging.info('Klaar met fase 2 na ' + str(round(time.time() - start_time, 2)) + 's')
 
-logging.info('Klaar in ' + str(round(time.time() - start_time, 2)) + 's')
+# fase 3 = analyse tekst
+pool = ThreadPool(aantal_threads)
+pool.map(doe_analyse_tekst, bestanden)
+pool.close()
+pool.join()
+logging.info('Klaar met fase 3 na ' + str(round(time.time() - start_time, 2)) + 's')
+
+# fase 4 = output data als csv
+export_data_als_csv(con)
+logging.info('Klaar met fase 4 na ' + str(round(time.time() - start_time, 2)) + 's')
