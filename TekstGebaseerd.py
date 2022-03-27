@@ -1,13 +1,8 @@
 import os
-import io
 import pyphen
 import sqlite3
 
-
-
 class TekstGebaseerd:
-    
-
     def woordlengte_ratio(transcript) -> float:
         # long word ratio =  the amount of words that contain more than three syllables divided by the total amount of words
         dic = pyphen.Pyphen(lang='nl_NL') # Pyphen kent geen Belgisch Nederlands

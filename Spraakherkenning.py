@@ -1,4 +1,5 @@
 import os
+import io
 import sys
 import json
 import wave
@@ -13,7 +14,7 @@ from vosk import Model, KaldiRecognizer, SetLogLevel
 class Methode(Enum):
     """ enum voor methodes die aanvaard worden door de klasse Spraakherkenning
     """
-    GOOGLE_ENKEL_BE_NL  = 0
+    GOOGLE_ENKEL_NL_BE  = 0
     GOOGLE_NL_FR        = 1
     VOSK                = 2
 
@@ -37,7 +38,7 @@ class Spraakherkenning:
         :param: methode
         :return str: transcriptie
         """
-        if methode   == Methode.GOOGLE_ENKEL_BE_NL:
+        if methode   == Methode.GOOGLE_ENKEL_NL_BE:
             return self.__google_cloud(False)
         elif methode == Methode.GOOGLE_NL_FR:
             return self.__google_cloud(True)
@@ -49,7 +50,7 @@ class Spraakherkenning:
     def __google_cloud(self, dialect_opvangen: bool) -> str:
         client = speech.SpeechClient()
 
-        with io.open(audio_file, 'rb') as speech_file:
+        with io.open(self.__audio_file_path, 'rb') as speech_file:
             content = speech_file.read()
 
         audio = speech.RecognitionAudio(content=content)
