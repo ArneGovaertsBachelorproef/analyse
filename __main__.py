@@ -10,12 +10,13 @@ import logging
 import datetime
 
 from dotenv import load_dotenv
-from Spraakherkenning import Spraakherkenning, Methode
+from parselmouth import PraatError
 from TekstGebaseerd import TekstGebaseerd
 from PraatGebaseerd import PraatGebaseerd
 from botocore.exceptions import ClientError
 from multiprocessing.dummy import Pool as ThreadPool
-from parselmouth import PraatError
+from google.api_core.exceptions import InvalidArgument as GoogleInvalidArgument
+from Spraakherkenning import Spraakherkenning, Methode
 
 load_dotenv()
 logging.basicConfig(level=logging.INFO)
@@ -253,7 +254,8 @@ def doe_analyse_praat(audio_file: str):
     con                         = maak_connectie(db_file)
     audio_id                    = audio_id_op_basis_van_bestand(con, audio_file)
     audio_file_path             = os.path.join(os.path.dirname(os.path.abspath(__file__)),'audio_files', audio_file)
-    
+    cur                         = con.cursor()
+
     cur.execute('SELECT praat_analyse_ok FROM audio WHERE audio_bestand = ?',  [ audio_file ])
     count = 0
     rijen1 = cur.fetchall()
@@ -288,6 +290,7 @@ def doe_analyse_praat(audio_file: str):
 def doe_speech_to_text(audio_file: str):
     con                         = maak_connectie(db_file)
     audio_id                    = audio_id_op_basis_van_bestand(con, audio_file)
+    cur                         = con.cursor()
 
     cur.execute('SELECT teksten_ok FROM audio WHERE audio_bestand = ?',  [ audio_file ])
     count = 0
@@ -318,11 +321,24 @@ def doe_speech_to_text(audio_file: str):
         con.commit()
 
         logging.info('Klaar met ' + audio_file)
-    except google.api_core.exceptions.InvalidArgument as e:
+    except GoogleInvalidArgument as e:
         logging.error(str(e))
 
 def doe_analyse_tekst(audio_file: str):
-    pass
+    con                         = maak_connectie(db_file)
+    audio_id                    = audio_id_op_basis_van_bestand(con, audio_file)
+    cur                         = con.cursor()
+
+    cur.execute('SELECT teksten_ok FROM audio WHERE audio_bestand = ?',  [ audio_file ])
+    count = 0
+    rijen1 = cur.fetchall()
+    for rij1 in rijen1:
+        if rij1[0]:
+            logging.info('Skip: ' + audio_file + ' met id = ' + str(audio_id))
+            count += 1
+    if count > 0:
+        return
+    
 
 # ========================================================================= #
 #  Hoofdprogramma                                                           #

@@ -3,12 +3,16 @@ import pyphen
 import sqlite3
 
 class TekstGebaseerd:
-    def woordlengte_ratio(transcript) -> float:
+    def __init__(self, con: sqlite3.Connection, transcript: str):
+        self.__transcript = transcript
+        self.__con = con
+
+    def woordlengteratio(self) -> float:
         # long word ratio =  the amount of words that contain more than three syllables divided by the total amount of words
         dic = pyphen.Pyphen(lang='nl_NL') # Pyphen kent geen Belgisch Nederlands
         drie_of_meer_lettergrepen = 0.0
 
-        woorden = transcript.lower().split()
+        woorden = self.__transcript.lower().replace('.','').replace('?','').replace('!','').replace(',','').split()
 
         for woord in woorden:
             letterprepen = dic.inserted(woord).split('-')
@@ -17,47 +21,56 @@ class TekstGebaseerd:
 
         return drie_of_meer_lettergrepen / len(woorden)
 
-    def cilt(cursor, transcript) -> float:
+    def cilt(self) -> float:
         # zie ook: https://www.nemokennislink.nl/publicaties/leesniveau-zegt-niets-over-leesplezier/
         # CILT =  114.49 + 0.28 × freq77 − 12.33 × avgwordlen
-        transcript = transcript.lower()
-        transcript_list = transcript.split()
+        cur = self.__con.cursor()
+
+        transcript_list = self.__transcript.lower().replace('.','').replace('?','').replace('!','').replace(',','').split()
         freq77 = 0.0
         avgwordlen = 0.0
 
         for word in transcript_list:
-            avgwordlen += len(word)
-
-            number = cursor.execute("SELECT ((SELECT number FROM freq77 where word = :word) * 10000 / count(*)) * 0.0001 FROM freq77;", {
-                'word': word
-            }).fetchone()[0]
-
+            number = cur.execute('select number from freq77 where word = ?', [word]).fetchone()
             if number is not None:
                 freq77 += 1
 
         freq77 /= len(transcript_list)
-        avgwordlen /= len(transcript.replace(" ", ""))
+        avgwordlen = sum( map(len, transcript_list) ) / len(transcript_list)
 
-        return 114.49 + 0.28 * freq77 - 12.33 * avgwordlen
+        return round(114.49 + 0.28 * freq77 - 12.33 * avgwordlen, 2)
 
-    def aantal_verkleinwoorden(cur, transcript) -> int:
+    def aantal_verkleinwoorden(self) -> int:
         # eindigen op -je, -tje, -etje, -pje, -kje, -tsje, -jes, -tjes, -etjes, -pjes, -kjes, -tsjes, -ke of -ken
         # filteren met woordenlijst -> nog op te stellen, zie: https://github.com/OpenTaal/opentaal-wordlist en lijst voornamen en plaatsnamen
         # tellen
-        transcript = transcript.lower().split()
+
+        def deel_in_basiswoordenlijst(woorddeel):
+            cur = self.__con.cursor()
+            res = cur.execute('select woord from woordenlijst where woord = ?', [woorddeel]).fetchone()
+            return res is not None
+
+        transcript_list = self.__transcript.lower().split()
         count = 0
 
-        for woord in transcript:
-            if woord[-2:] == 'je' or woord[-3:] == 'jes' or woord[-2:] == 'ke' or woord[-3:] == 'ken':
-                if not_in_basiswoordenlijst:
+        for woord in transcript_list:
+            if woord[-2:] == 'je' or woord[-2:] == 'ke' or woord[-3:] == 'jes' or woord[-3:] == 'ken':
+                if deel_in_basiswoordenlijst(woord[:-2]) or deel_in_basiswoordenlijst(woord[:-3]):
                     count += 1
 
         return count
 
-    def aantal_collectieve_voornaamwoorden(transcript) -> int:
-        transcript = transcript.lower().split()
-        return transcript.count('we') + transcript.count('ons')
+    def aantal_collectieve_voornaamwoorden(self) -> int:
+        transcript_list = self.__transcript.lower().replace('.','').replace('?','').replace('!','').replace(',','').split()
+        return transcript_list.count('we') + transcript_list.count('ons') + transcript_list.count('onze')
 
-    def aantal_bevestigende_tussenwerpsels(transcript) -> int:
-        transcript = transcript.lower().split()
-        return transcript.count('hé') + transcript.count('voilà')
+    def aantal_bevestigende_tussenwerpsels(self) -> int:
+        transcript_list = self.__transcript.lower().replace('.','').replace('?','').replace('!','').replace(',','').split()
+        print(transcript_list)
+        return transcript_list.count('hé') + transcript_list.count('voilà') + transcript_list.count('he') + transcript_list.count('voila')
+
+    def textcat_elderspeak(self) -> bool:
+        pass
+
+    def herhalingen(self) -> bool:
+        pass
