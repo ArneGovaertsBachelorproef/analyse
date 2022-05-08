@@ -1,4 +1,4 @@
-import spacy, sqlite3, random, re, string
+import spacy, sqlite3, random, re, string, csv
 
 from spacy.tokens import DocBin
 
@@ -46,3 +46,28 @@ for tekst, cats in training_data:
     doc.cats = cats
     db.add(doc)
 db.to_disk('./train.spacy')
+
+# test data
+test_data = []
+
+with open('test.csv', newline='') as csvfile:
+    r = csv.reader(csvfile, delimiter=';', quotechar='"')
+    for rij in r:
+        line = preprocess_tekst(rij[0])
+        
+        if rij[1]:
+            tdoc = (line, { 'normaal': 0.0, 'elderspeak': 1.0 })
+        else:
+            tdoc = (line, { 'normaal': 1.0, 'elderspeak': 0.0 })
+        
+        test_data.append(tdoc)
+
+# to disk
+nlp = spacy.blank('nl')
+
+db = DocBin()
+for tekst, cats in test_data:
+    doc = nlp(tekst)
+    doc.cats = cats
+    db.add(doc)
+db.to_disk('./test.spacy')

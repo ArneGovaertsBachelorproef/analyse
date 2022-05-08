@@ -8,7 +8,9 @@ Doel: model bouwen voor alle tekstgebaseerde eigenschappen samen
 <https://medium.com/activewizards-machine-learning-company/comparison-of-top-6-python-nlp-libraries-c4ce160237eb>
 
 ```
-python classify.py
+python -m spacy init fill-config base_config.cfg config.cfg
+python preprocess.py
 python -m spacy train config.cfg --output ./output --paths.train ./train.spacy --paths.dev ./train.spacy
 python -m spacy evaluate output/model-best train.spacy
+python classify.py
 ```
