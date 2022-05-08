@@ -1,10 +1,4 @@
-import os
-import io
-import sys
-import json
-import wave
-import sqlite3
-import subprocess
+import io, sys, json, sqlite3, subprocess
 
 from enum import Enum
 from pathlib import Path
@@ -16,7 +10,8 @@ class Methode(Enum):
     """
     GOOGLE_ENKEL_NL_BE  = 0
     GOOGLE_NL_FR        = 1
-    VOSK                = 2
+    VOSK_SMALL          = 2
+    VOSK_BIG            = 3
 
 class Spraakherkenning:
     """ klasse die alle methodes omvat voor spraakherkenning
@@ -42,8 +37,10 @@ class Spraakherkenning:
             return self.__google_cloud(False)
         elif methode == Methode.GOOGLE_NL_FR:
             return self.__google_cloud(True)
-        elif methode == Methode.VOSK:
-            return self.__vosk()
+        elif methode == Methode.VOSK_SMALL:
+            return self.__vosk(small=True)
+        elif methode == Methode.VOSK_BIG:
+            return self.__vosk(small=False)
         else:
             raise NotImplementedError('Methode niet gekend')
 
@@ -75,17 +72,20 @@ class Spraakherkenning:
 
         return transcript
 
-    def __vosk(self) -> str:
+    def __vosk(self, small=True) -> str:
         # see: https://github.com/alphacep/vosk-api/blob/master/python/example/test_ffmpeg.py
         
         oud_pad     = Path(self.__audio_file_path)
         nieuw_pad   = oud_pad.with_suffix('.wav')
-        os.system('ffmpeg -y -v info -i ' + str(oud_pad.absolute()) + ' ' + str(nieuw_pad.absolute()))
+        process = subprocess.Popen(['ffmpeg', '-y', '-v', 'info', '-i', str(oud_pad.absolute()), str(nieuw_pad.absolute())], stdout=subprocess.PIPE)
 
         SetLogLevel(0)
 
         sample_rate = 16000
-        model       = Model('vosk-model-nl-spraakherkenning-0.6')
+        if small:
+            model   = Model('vosk-model-small-nl-0.22')
+        else:
+            model   = Model('vosk-model-nl-spraakherkenning-0.6')
         rec         = KaldiRecognizer(model, sample_rate)
 
         process = subprocess.Popen(['ffmpeg', '-loglevel', 'quiet', '-i', str(nieuw_pad.absolute()), '-ar', str(sample_rate) ,

@@ -1,7 +1,8 @@
 import sqlite3
 import numpy as np
 
-from matplotlib import pyplot as plt 
+from matplotlib import pyplot as plt
+from scipy.stats import ttest_ind
 
 # ophalen uit databank
 db_file = 'elderspeak_detect.db'
@@ -66,12 +67,20 @@ print('Standard Deviation:\t' + str(np.median(spraaksnelheid_oudere)))
 print()
 print('Diff:\t\t\t\t' + str(np.mean(spraaksnelheid_oudere) - np.mean(spraaksnelheid_leeftijdsgenoot)))
 
+t_test = ttest_ind(spraaksnelheid_leeftijdsgenoot, spraaksnelheid_oudere, equal_var=False, alternative='greater')
+print('Welch t-test:')
+print('\tt = ' + str(t_test[0]))
+print('\tp = ' + str(t_test[1]))
+if t_test[1] < 0.05:
+    print('\tSIGNIFICANT')
+else:
+    print('\tNIET SIGNIFICANT')
+
 p1 = plt.plot(range(len(spraaksnelheid_leeftijdsgenoot)), spraaksnelheid_leeftijdsgenoot, 'r-', label='Leeftijdsgenoot')
 p2 = plt.plot(range(len(spraaksnelheid_oudere)), spraaksnelheid_oudere, 'b-', label='Oudere')
 plt.legend(loc='upper center', numpoints=1, bbox_to_anchor=(0.5, -0.05), ncol=2, fancybox=True, shadow=True)
 
 plt.savefig('spraaksnelheid.png')
-#plt.show()
 plt.close()
 
 print()
@@ -100,12 +109,20 @@ print('Standard Deviation:\t' + str(np.median(geluidsniveau_oudere)))
 print()
 print('Diff:\t\t\t\t' + str(np.mean(geluidsniveau_oudere) - np.mean(geluidsniveau_leeftijdsgenoot)))
 
+t_test = ttest_ind(geluidsniveau_leeftijdsgenoot, geluidsniveau_oudere, equal_var=False, alternative='less')
+print('Welch t-test:')
+print('\tt = ' + str(t_test[0]))
+print('\tp = ' + str(t_test[1]))
+if t_test[1] < 0.05:
+    print('\tSIGNIFICANT')
+else:
+    print('\tNIET SIGNIFICANT')
+
 p1 = plt.plot(range(len(geluidsniveau_leeftijdsgenoot)), geluidsniveau_leeftijdsgenoot, 'r-', label='Leeftijdsgenoot')
 p2 = plt.plot(range(len(geluidsniveau_oudere)), geluidsniveau_oudere, 'b-', label='Oudere')
 plt.legend(loc='upper center', numpoints=1, bbox_to_anchor=(0.5, -0.05), ncol=2, fancybox=True, shadow=True)
 
 plt.savefig('geluidsniveau.png')
-#plt.show()
 plt.close()
 
 print()
@@ -134,10 +151,18 @@ print('Standard Deviation:\t' + str(np.median(toonhoogte_oudere)))
 print()
 print('Diff:\t\t\t\t' + str(np.mean(toonhoogte_oudere) - np.mean(toonhoogte_leeftijdsgenoot)))
 
+t_test = ttest_ind(toonhoogte_leeftijdsgenoot, toonhoogte_oudere, equal_var=False, alternative='less')
+print('Welch t-test:')
+print('\tt = ' + str(t_test[0]))
+print('\tp = ' + str(t_test[1]))
+if t_test[1] < 0.05:
+    print('\tSIGNIFICANT')
+else:
+    print('\tNIET SIGNIFICANT')
+
 p1 = plt.plot(range(len(toonhoogte_leeftijdsgenoot)), toonhoogte_leeftijdsgenoot, 'r-', label='Leeftijdsgenoot')
 p2 = plt.plot(range(len(toonhoogte_oudere)), toonhoogte_oudere, 'b-', label='Oudere')
 plt.legend(loc='upper center', numpoints=1, bbox_to_anchor=(0.5, -0.05), ncol=2, fancybox=True, shadow=True)
 
 plt.savefig('toonhoogte.png')
-#plt.show() 
 plt.close()

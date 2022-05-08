@@ -1,7 +1,5 @@
-import math
-import parselmouth
+import math, parselmouth, subprocess
 
-from os import system
 from pathlib import Path
 from parselmouth.praat import call
 
@@ -22,7 +20,7 @@ class PraatGebaseerd:
         """
         oud_pad = Path(audio_file_path)
         nieuw_pad = oud_pad.with_suffix('.wav')
-        system('ffmpeg -y -v info -i ' + str(oud_pad.absolute()) + ' ' + str(nieuw_pad.absolute()))
+        process = subprocess.Popen(['ffmpeg', '-y', '-v', 'info', '-i', str(oud_pad.absolute()), str(nieuw_pad.absolute())], stdout=subprocess.PIPE)
         self.__audio_file_path = str(nieuw_pad.absolute())
     
     def geluidsniveau_in_db(self) -> float:             # intensity 

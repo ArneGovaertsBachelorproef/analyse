@@ -1,6 +1,4 @@
-import os
-import pyphen
-import sqlite3
+import pyphen, sqlite3, spacy, re, string
 
 class TekstGebaseerd:
     def __init__(self, con: sqlite3.Connection, transcript: str):
@@ -13,6 +11,8 @@ class TekstGebaseerd:
         drie_of_meer_lettergrepen = 0.0
 
         woorden = self.__transcript.lower().replace('.','').replace('?','').replace('!','').replace(',','').split()
+        if len(woorden) == 0:
+            return -1
 
         for woord in woorden:
             letterprepen = dic.inserted(woord).split('-')
@@ -29,6 +29,9 @@ class TekstGebaseerd:
         transcript_list = self.__transcript.lower().replace('.','').replace('?','').replace('!','').replace(',','').split()
         freq77 = 0.0
         avgwordlen = 0.0
+
+        if len(transcript_list) == 0:
+            return -1
 
         for word in transcript_list:
             number = cur.execute('select number from freq77 where word = ?', [word]).fetchone()
@@ -54,7 +57,7 @@ class TekstGebaseerd:
         count = 0
 
         for woord in transcript_list:
-            if woord[-2:] == 'je' or woord[-2:] == 'ke' or woord[-3:] == 'jes' or woord[-3:] == 'ken':
+            if len(woord) > 2 and woord[-2:] == 'je' or woord[-2:] == 'ke' or woord[-3:] == 'jes' or woord[-3:] == 'ken':
                 if deel_in_basiswoordenlijst(woord[:-2]) or deel_in_basiswoordenlijst(woord[:-3]):
                     count += 1
 
@@ -69,8 +72,29 @@ class TekstGebaseerd:
         print(transcript_list)
         return transcript_list.count('hé') + transcript_list.count('voilà') + transcript_list.count('he') + transcript_list.count('voila')
 
-    def textcat_elderspeak(self) -> bool:
-        pass
+    def textcat_elderspeak(self) -> float:
+        def preprocess_text(text):
+            text = text.lower().strip()
+            text = re.compile('<.*?>').sub('', text)
+            text = re.compile('[%s]' % re.escape(string.punctuation)).sub(' ', text)
+            text = re.sub('\s+', ' ', text)
+            text = re.sub(r'\[[0-9]*\]',' ',text)
+            text = re.sub(r'[^\w\s]', '', str(text).lower().strip())
+            text = re.sub(r'\d',' ',text)
+            text = re.sub(r'\s+',' ',text)
 
-    def herhalingen(self) -> bool:
-        pass
+            return text
+
+        nlp = spacy.load('spacy/output/model-best')
+        doc = nlp(preprocess_text(self.__transcript))
+        return doc.cats['elderspeak']
+
+    def aantal_herhalingen(self) -> int:        
+        sp = spacy.load('nl_core_news_lg')
+
+        stopwoorden = sp.Defaults.stop_words
+        transcript_list = self.__transcript.lower().split()
+        zonder_stopwoorden = [ woord for woord in transcript_list if not woord in stopwoorden ]
+        count_met_dict = { woord:zonder_stopwoorden.count(woord)
+                            for woord in zonder_stopwoorden if zonder_stopwoorden.count(woord) > 1 }
+        return(len(count_met_dict))

@@ -143,4 +143,4 @@ vosk*
 # spacy
 spacy/output
 spacy/config.cfg
-spacy/train.spacy
+spacy/*.spacy

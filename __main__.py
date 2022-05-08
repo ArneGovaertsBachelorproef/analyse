@@ -8,6 +8,7 @@ import boto3
 import sqlite3
 import logging
 import datetime
+import pandas as pd
 
 from dotenv import load_dotenv
 from parselmouth import PraatError
@@ -41,7 +42,7 @@ def maak_connectie(db_file: str) -> sqlite3.Connection:
 
     con = None
     try:
-        con = sqlite3.connect(db_file)
+        con = sqlite3.connect(db_file, 120.0)
     except Error as e:
         logging.error(e)
     return con
@@ -105,10 +106,13 @@ def maak_tabellen(con: sqlite3.Connection):
         woordlengteratio                                REAL,    
         aantal_collectieve_voornaamwoorden              INTEGER,
         aantal_bevestigende_tussenwerpsels              INTEGER,
+        aantal_verkleinwoorden                          INTEGER,
+        aantal_herhalingen                              INTEGER,
+        textcat_elderspeak_score                        REAL,
         audio_id                                        INTEGER NOT NULL,
         tekst_id                                        INTEGER NOT NULL,
         FOREIGN KEY(audio_id)                           REFERENCES audio(audio_id),
-        FOREIGN KEY(tekst_id)                           REFERENCES audio(tekst_id)   
+        FOREIGN KEY(tekst_id)                           REFERENCES teksten(tekst_id)   
     );''')
 
 def ophalen_audio_bestanden(con: sqlite3.Connection):
@@ -229,19 +233,18 @@ def audio_id_op_basis_van_bestand(con: sqlite3.Connection, bestandsnaam: str) ->
     raise Exception('Bestandsnaam niet gevonden')
 
 def export_data_als_csv(con: sqlite3.Connection):
-    dir_exists = os.path.exists(output_dir)
+    con = sqlite3.connect(db_file, detect_types=sqlite3.PARSE_COLNAMES)
 
+    def write_to_csv(tabel: str):
+        db_df = pd.read_sql_query("SELECT * FROM audio", con)
+        db_df.to_csv(output_dir + 'audio.csv', index=False)
+    
+    dir_exists = os.path.exists(output_dir)
     if not dir_exists:
         os.makedirs(output_dir)
 
-    #with open(output_dir + '/teksten.csv', 'wb') as teksten_file:
-    #    writer = csv.writer(teksten_file)
-    #    writer.writerow(['tekst_id', 'tekst', 'methode', 'audio_id'])
-    #
-    #    cur = con.cursor()
-    #    cur.execute('select ')
-
-    #    writer.writerows(data)
+    tabellen = ['audio', 'praat_resultaten', 'tekst_resultaten', 'teksten']
+    map(write_to_csv, tabellen)
 
 # ------------------------------------------------------------------------- #
 #  Werkers                                                                  #
@@ -272,7 +275,6 @@ def doe_analyse_praat(audio_file: str):
         spraaksnelheid_in_sylps     = praat.spraaksnelheid_in_sylps()
         gemiddelde_toonhoogte_in_hz = praat.gemiddelde_toonhoogte_in_hz()
 
-        cur = con.cursor()
         cur.execute('''INSERT INTO praat_resultaten(spraaksnelheid,geluidsniveau,toonhoogte,audio_id)
         VALUES (:spraaksnelheid,:geluidsniveau,:toonhoogte,:audio_id);''', {
             'spraaksnelheid':   spraaksnelheid_in_sylps,
@@ -308,13 +310,14 @@ def doe_speech_to_text(audio_file: str):
     try:
         google_enkel_nl_be          = spraakherkenning.tekst(Methode.GOOGLE_ENKEL_NL_BE)
         google_dialect_opvangen     = spraakherkenning.tekst(Methode.GOOGLE_NL_FR)
-        vosk                        = spraakherkenning.tekst(Methode.VOSK)
+        vosk_small                  = spraakherkenning.tekst(Methode.VOSK_SMALL)
+        vosk_big                    = spraakherkenning.tekst(Methode.VOSK_BIG)
 
-        cur = con.cursor()
         records = [
             (google_enkel_nl_be,        'GOOGLE_ENKEL_NL_BE',   audio_id),
             (google_dialect_opvangen,   'GOOGLE_NL_FR',         audio_id),
-            (vosk,                      'VOSK',                 audio_id)
+            (vosk_small,                'VOSK_SMALL',           audio_id),
+            (vosk_big,                  'VOSK_BIG',             audio_id)
         ]
         cur.executemany('INSERT INTO teksten (tekst,methode,audio_id) VALUES (?,?,?);', records)
         cur.execute('UPDATE audio SET teksten_ok = true WHERE audio_id = ?', [audio_id])
@@ -329,7 +332,7 @@ def doe_analyse_tekst(audio_file: str):
     audio_id                    = audio_id_op_basis_van_bestand(con, audio_file)
     cur                         = con.cursor()
 
-    cur.execute('SELECT teksten_ok FROM audio WHERE audio_bestand = ?',  [ audio_file ])
+    cur.execute('SELECT tekst_analyse_ok FROM audio WHERE audio_bestand = ?',  [ audio_file ])
     count = 0
     rijen1 = cur.fetchall()
     for rij1 in rijen1:
@@ -338,7 +341,56 @@ def doe_analyse_tekst(audio_file: str):
             count += 1
     if count > 0:
         return
+
+    cur.execute('SELECT tekst_id, tekst FROM teksten WHERE tekst is not NULL and tekst is not "<unk>" and audio_id = ?', [ audio_id ])
+    rijen = cur.fetchall()
+        
+    for rij in rijen:
+        tekst_analyse                       = TekstGebaseerd(con, rij[1])
+        woordlengteratio                    = tekst_analyse.woordlengteratio()
+        cilt                                = tekst_analyse.cilt()
+        aantal_verkleinwoorden              = tekst_analyse.aantal_verkleinwoorden()
+        aantal_collectieve_voornaamwoorden  = tekst_analyse.aantal_collectieve_voornaamwoorden()
+        aantal_bevestigende_tussenwerpsels  = tekst_analyse.aantal_bevestigende_tussenwerpsels()
+        textcat_elderspeak                  = tekst_analyse.textcat_elderspeak()
+        aantal_herhalingen                  = tekst_analyse.aantal_herhalingen()
+
+        cur.execute('''INSERT INTO tekst_resultaten (
+            cilt,
+            woordlengteratio,
+            aantal_collectieve_voornaamwoorden,
+            aantal_bevestigende_tussenwerpsels,
+            aantal_verkleinwoorden,
+            aantal_herhalingen,
+            textcat_elderspeak_score,
+            audio_id,
+            tekst_id
+        ) VALUES (
+            :cilt,
+            :woordlengteratio,
+            :aantal_collectieve_voornaamwoorden,
+            :aantal_bevestigende_tussenwerpsels,
+            :aantal_verkleinwoorden,
+            :aantal_herhalingen,
+            :textcat_elderspeak_score,
+            :audio_id,
+            :tekst_id
+        );''', {
+            'cilt': cilt,
+            'woordlengteratio': woordlengteratio,
+            'aantal_collectieve_voornaamwoorden': aantal_collectieve_voornaamwoorden,
+            'aantal_bevestigende_tussenwerpsels': aantal_bevestigende_tussenwerpsels,
+            'aantal_verkleinwoorden': aantal_verkleinwoorden,
+            'aantal_herhalingen': aantal_herhalingen,
+            'textcat_elderspeak_score': textcat_elderspeak,
+            'audio_id': audio_id,
+            'tekst_id': rij[0]
+        })
     
+    cur.execute('UPDATE audio SET tekst_analyse_ok = true WHERE audio_id = ?', [audio_id])
+    con.commit()
+
+    logging.info('Klaar met ' + audio_file)
 
 # ========================================================================= #
 #  Hoofdprogramma                                                           #
