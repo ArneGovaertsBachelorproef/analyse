@@ -3,30 +3,30 @@
   "token_p":1.0,
   "token_r":1.0,
   "token_f":1.0,
-  "cats_score":0.9848171153,
+  "cats_score":0.9847610252,
   "cats_score_desc":"macro F",
   "cats_micro_p":0.9848484848,
   "cats_micro_r":0.9848484848,
   "cats_micro_f":0.9848484848,
-  "cats_macro_p":0.984375,
-  "cats_macro_r":0.9857142857,
-  "cats_macro_f":0.9848171153,
+  "cats_macro_p":0.9861111111,
+  "cats_macro_r":0.9838709677,
+  "cats_macro_f":0.9847610252,
   "cats_macro_auc":0.9995391705,
   "cats_f_per_type":{
     "normaal":{
-      "p":0.96875,
-      "r":1.0,
-      "f":0.9841269841
+      "p":1.0,
+      "r":0.9677419355,
+      "f":0.9836065574
     },
     "elderspeak":{
-      "p":1.0,
-      "r":0.9714285714,
-      "f":0.9855072464
+      "p":0.9722222222,
+      "r":1.0,
+      "f":0.985915493
     }
   },
   "cats_auc_per_type":{
     "normaal":0.9995391705,
     "elderspeak":0.9995391705
   },
-  "speed":1837.5513092063
+  "speed":2355.4776170949
 }

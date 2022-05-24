@@ -14,8 +14,8 @@ def preprocess_text(text): # verschil tussen tok2vec v1 en v2
 
 nlp = spacy.load('output/model-best')
 
-with open('test.csv', newline='') as csvfile1:
-    with open('resultaat.csv', 'w', newline='') as csvfile2:
+with open('test.csv', newline='', encoding='utf-8') as csvfile1:
+    with open('resultaat.csv', 'w', newline='', encoding='utf-8') as csvfile2:
         csvreader = csv.reader(csvfile1, delimiter=';', quotechar='"')
 
         csvwriter = csv.writer(csvfile2, delimiter=';', quoting=csv.QUOTE_MINIMAL, quotechar='"')

@@ -26,7 +26,11 @@ class Spraakherkenning:
         """ constructor
         :param audio_file_path: bestandsnaam als string
         """
-        self.__audio_file_path    = audio_file_path
+        oud_pad     = Path(audio_file_path)
+        nieuw_pad   = oud_pad.with_suffix('.wav')
+        process = subprocess.Popen(['ffmpeg', '-y', '-v', 'info', '-i', str(oud_pad.absolute()), str(nieuw_pad.absolute())], stdout=subprocess.PIPE)
+        
+        self.__audio_file_path    = str(nieuw_pad.absolute())
     
     def tekst(self, methode: Methode) -> str:
         """ omzetten van spraak naar tekst met de opgegeven methode
@@ -74,10 +78,6 @@ class Spraakherkenning:
 
     def __vosk(self, small=True) -> str:
         # see: https://github.com/alphacep/vosk-api/blob/master/python/example/test_ffmpeg.py
-        
-        oud_pad     = Path(self.__audio_file_path)
-        nieuw_pad   = oud_pad.with_suffix('.wav')
-        process = subprocess.Popen(['ffmpeg', '-y', '-v', 'info', '-i', str(oud_pad.absolute()), str(nieuw_pad.absolute())], stdout=subprocess.PIPE)
 
         SetLogLevel(0)
 
@@ -88,7 +88,7 @@ class Spraakherkenning:
             model   = Model('vosk-model-nl-spraakherkenning-0.6')
         rec         = KaldiRecognizer(model, sample_rate)
 
-        process = subprocess.Popen(['ffmpeg', '-loglevel', 'quiet', '-i', str(nieuw_pad.absolute()), '-ar', str(sample_rate) ,
+        process = subprocess.Popen(['ffmpeg', '-loglevel', 'quiet', '-i', self.__audio_file_path, '-ar', str(sample_rate) ,
             '-ac', '1', '-f', 's16le', '-'], stdout=subprocess.PIPE)
 
         res = []

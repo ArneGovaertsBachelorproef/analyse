@@ -1,0 +1,154 @@
+BEREKEN WER WAARDES (lager is beter)
+
+===================================================
+
+Opname : oudere_opname_2022-04-14_94329e2190bf3d02a64de0f777d6625e.flac
+
+Gold standard:
+Dag oma Ik heb zin om met je morgen naar zee te gaan Lijkt je dat een goed idee? Ik pik je dan op om negen uur en we rijden met de wagen naar Nieuwpoort Daar kunnen we rustig op de dijk wandelen en van een koffietje genieten en 's middags gaan we lekker samen gezellig lunchen Wanneer het nog lukt voor jou dan kunnen we in de namiddag wat kuieren langs de winkels of een terrasje doen op de dijk Ze voorspellen mooi weer dus je kan lichte kledij aandoen en makkelijke schoenen Maar neem zeker een pulletje mee want een zeebries kan soms wat kouder aanvoelen Mij lijkt me dit alvast een tof idee En wat zeg je? Ga je mee?
+
+
+GOOGLE_ENKEL_NL_BE:
+dag oma ik heb zin om met je morgen naar zee te gaan denk je dat een goed idee we gaan op om 9 uur en we rijden met de wagen naar Nieuwpoort daar kunnen we rustig op de dijk wandelen en van een koffietje genieten en 's middags gaan we lekker samen lunchen wanneer het nog leuk voor jou dan kunnen we in de namiddag wat kuieren langs de winkels of een terrasje doen op de dijk te voorspellen mooi weer dus ik kan lichte kledij aandoen en makkelijke schoenen maar neem zeker ook poedertje mee want de zeebries kan soms wat kouder aanvoelen maar lijkt het alvast een tof idee en wat zeg je ga je mee
+
+WER =		0.21138211382113822
+MY_WER =	0.21138211382113822
+
+
+GOOGLE_NL_FR:
+dag oma ik heb zin om met je morgen naar zee te gaan denk je dat een goed idee we gaan op om 9 uur en we rijden met de wagen naar Nieuwpoort daar kunnen we rustig op de dijk wandelen en van een koffietje genieten en 's middags gaan we lekker samen lunchen wanneer het nog leuk voor jou dan kunnen we in de namiddag wat kuieren langs de winkels of een terrasje doen op de dijk te voorspellen mooi weer dus ik kan lichte kledij aandoen en makkelijke schoenen maar neem zeker ook poedertje mee want de zeebries kan soms wat kouder aanvoelen maar lijkt het alvast een tof idee en wat zeg je ga je mee
+
+WER =		0.21138211382113822
+MY_WER =	0.21138211382113822
+
+
+VOSK_SMALL:
+aangeboden ik heb stemmen omdat je woning en mensen ik heb je wel tegenover dit dieet ik pik je dan ook je nu doet en wij hebben met naar manier pubers kunnen we er een stukje op de de hekken wandelen en van een koffertje je niet en 's middags gaan we lekker samen lunchen manieren nog gelukt de ik dan kunnen we in namiddag maar turkije langs de winkels of een terrassen doe een oproep deed spellen mooie mee eens dus je kan lichte club aan doen en makkelijke schoenen maar neem zeker ook door dutch meer wat zeer bridge kan soms wat koude ouders worden mij lijkt dat de dood was ook tof ik die en maar ik krijg je hem heen 
+
+WER =		0.6585365853658537
+MY_WER =	0.6585365853658537
+
+
+VOSK_BIG:
+<unk> <unk> <unk> dit biedt dan ook om negen uur en dan waargemaakt nieuw toerist heb kunnen rustig op de dijk wandelen en van een koffertje genieten en 's middags ga lekker schrale <unk> manieren nog <unk> dan kunnen we in een amin dat keien langs de <unk> of een terrasje <unk> op de dijk <unk> de kledij aandoen en makkelijke schoenen maar zeker een <unk> wat kouder aanvoelen mij lijkt het al tot <unk> en krijgt hij mee 
+
+WER =		0.6504065040650406
+MY_WER =	0.6504065040650406
+
+
+
+===================================================
+
+Opname : oudere_opname_2022-02-11_8bb4506fd302006d224e9c1584d0a5da.flac
+
+Gold standard:
+Dag oma Ga je morgen met ons mee naar de zee? We komen je halen met de auto We vertrekken om negen uur Vergeet je zwempak niet mee te nemen want we gaan samen zwemmen in het zwembad van Oostende Natuurlijk ga we ook iets lekkers eten en een lekkere koffie gaan drinken Ik pik je op om negen uur Zorg dat je er bent oma
+
+
+GOOGLE_ENKEL_NL_BE:
+dag oma kan je morgen met ons mee naar de zee We komen je halen met de auto vertrekken om 9 uur Vergeet je zwempak niet mee te nemen want we gaan samen zwemmen in het zwembad van Oostende Natuurlijk gaan we ook iets lekkers eten en iets een lekkere koffie gaan drinken Pietje op om 9 uur Zorg dat je er bent oma
+
+WER =		0.16666666666666666
+MY_WER =	0.16666666666666666
+
+
+GOOGLE_NL_FR:
+dag oma kan je morgen met ons mee naar de zee We komen je halen met de auto vertrekken om 9 uur Vergeet je zwempak niet mee te nemen want we gaan samen zwemmen in het zwembad van Oostende Natuurlijk gaan we ook iets lekkers eten en iets een lekkere koffie gaan drinken Pietje op om 9 uur Zorg dat je er bent oma
+
+WER =		0.16666666666666666
+MY_WER =	0.16666666666666666
+
+
+VOSK_SMALL:
+dag om geen je morgen met ons mee naar dit we komen je halen met de auto vertrekken om negen x vergeet ben bak niet mee te nemen waarom twee gaan samen zwemmen in het zwembad van stemde natuurlijk gaan we ook iets lekker het eten en iets een lekkere koffie drinken pietje op negen nieuws zo de tijd je er bent om
+
+WER =		0.4393939393939394
+MY_WER =	0.4393939393939394
+
+
+VOSK_BIG:
+dag oma en je marion met ons mee naar tennessee we komen je halen met de auto vertrekken om negen uur vergeet je zwempak niet mee te nemen want wij gaan samen zullen maar in het zwembad van oostende natuurlijk gaan we ook iets lekkers eten en iets een lekkere koffie gaan drinken <unk> zorg dat je er bent gekomen
+
+WER =		0.36363636363636365
+MY_WER =	0.36363636363636365
+
+
+
+===================================================
+
+Opname : leeftijdsgenoot_opname_2022-03-17_97af73e3939320f945ec67a090e4dc18.flac
+
+Gold standard:
+HÚ Het zou wel goed zijn om morgen naar de zee te gaan Ehm ik dacht om niet te laat te vertrekken Zo rond elf uur of zo aan het station Ehm Gent-Sint-Pieters en daar dan de trein te pakken en eh en ja moest ge bijvoorbeeld eh drank kunnen meepakken of zo eh dan zorg ik voor eh wat eten eh en dan kunnen we eigenlijk gewoon eh een gezellig picknickje houden Ca va?
+
+
+GOOGLE_ENKEL_NL_BE:
+Zet op zender om naartoe te gaan Ik dacht om niet te laten vertrekken zorgen om 12 uur ofzo aan het station gent-sint-pieters trein te pakken en moest je bijvoorbeeld drinken meepakken ofzo en dan voor problemen dan kunnen wij eigenlijk gewoon
+
+WER =		0.6666666666666666
+MY_WER =	0.6666666666666666
+
+
+GOOGLE_NL_FR:
+þa va pour 13h þa va
+
+WER =		1.0
+MY_WER =	1.0
+
+
+VOSK_SMALL:
+je zodat ze en om in de ziet aan ik dacht te laten vertrekken zo rond elf uur ofzo station sint pieters en werden dan de trend te pakken en ja moest je bijvoorbeeld een trein kunnen meer pakken nog zonder zorg voor het probleem niet in een kunnen werkelijk gewoon het zal niet ze houden ze zover
+
+WER =		0.6666666666666666
+MY_WER =	0.6666666666666666
+
+
+VOSK_BIG:
+en je zal tot zijn uh om om morgen naar een ziet aan uhm <unk> aan u te laat gek zon rond elf uur of zo aan station uh <unk> dan het gen arke en uhm ja moest je bijvoorbeeld uh uh drank kunnen meer nog zon zorgt voor uh waar je niet in een uh <unk> on uh zal <unk> ze <unk>
+
+WER =		0.76
+MY_WER =	0.76
+
+
+
+===================================================
+
+Opname : leeftijdsgenoot_opname_2022-02-28_9bd65c7d1a54b84b8815e4347a36eb9e.flac
+
+Gold standard:
+Eh schatje ik zou graag morgen naar zee gaan Ehm Goh ja Dat is niet zo lang rijden hÚ? pakt dat we vertrekken rond half tien Ehm Wilt ge wel helpen met boterhammekes smeren dan zullen we 's avonds iets gaan eten of hebt ge liever anders om? Allez ja dat maakt nu niet zo veel uit Ehm we nemen gewoon de auto hÚ? Ehm Oostende? Of hebt ge liever de zeehondjes? Oostende is goed hÚ? Ja nee þa va okÚ
+
+
+GOOGLE_ENKEL_NL_BE:
+schatje Ik zou graag morgen naar zee gaan dus niet zo lang rijden hÞ vertrekken rond 9:30 moet je wel helpen maar mijn boterham kan smeren dan zullen we 's avonds iets gaan eten of heb je liever andere zon oh ja dat maakt me niet zoveel uit jouw nieuwe honden nator Oostende Of heb je liever zeehondjes school hÞ okÚ
+
+WER =		0.6049382716049383
+MY_WER =	0.6049382716049383
+
+
+GOOGLE_NL_FR:
+schatje Ik zou graag morgen naar zee gaan dus niet zo lang rijden hÞ vertrekken rond 9:30 moet je wel helpen maar mijn boterham kan smeren dan zullen we 's avonds iets gaan eten of heb je liever andere zon oh ja dat maakt me niet zoveel uit jouw nieuwe honden nator Oostende Of heb je liever zeehondjes school hÞ okÚ
+
+WER =		0.6049382716049383
+MY_WER =	0.6049382716049383
+
+
+VOSK_SMALL:
+schetsen ik zou mooi mijn steentje aan gooi dus niet zolang de oktober rond half tien wel helpen boterham smeren dan zo 's avonds iets gaan eten of heb je liever andersom ja het maakt me niet zo uit die begonnen als stemde of heb je liever de zeehondjes daniel stemmen en is voor nu zowel okÚ
+
+WER =		0.691358024691358
+MY_WER =	0.691358024691358
+
+
+VOSK_BIG:
+uh schatje ik zou <unk> morgen mijn steentje aan uhm goh ja dus niet zolang er heidenen oktober trekken rond half tien <unk> boterham remkes meer dan uhm zo 's avonds iets gaan niet op of het <unk> samsom maakt me niet zoveel uit uhm ja die begon met nat hoor uhm ostende of heb <unk> dan nu al de scholen ja nu zoa aqim
+
+WER =		0.7901234567901234
+MY_WER =	0.7901234567901234
+
+
+===================================================
+GOOGLE_ENKEL_NL_BE:		0.41241342968985245
+GOOGLE_NL_FR:		0.49574676302318577
+VOSK_SMALL:		0.6139888040294544
+VOSK_BIG:		0.6410415811228819

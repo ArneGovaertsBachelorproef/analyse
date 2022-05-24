@@ -325,7 +325,7 @@ def doe_speech_to_text(audio_file: str):
 
         logging.info('Klaar met ' + audio_file)
     except GoogleInvalidArgument as e:
-        logging.error(str(e))
+        logging.error('Bij ' + audio_file + ':' + str(e))
 
 def doe_analyse_tekst(audio_file: str):
     con                         = maak_connectie(db_file)
