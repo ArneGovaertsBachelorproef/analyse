@@ -1,4 +1,4 @@
-import spacy, sqlite3, random, re, string, csv
+import spacy, re, string, csv
 
 from spacy.tokens import DocBin
 

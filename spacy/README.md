@@ -9,7 +9,7 @@ Doel: model bouwen voor alle tekstgebaseerde eigenschappen samen
 
 ```
 python -m spacy init fill-config base_config.cfg config.cfg
-python preprocess.py
+python preprocess1.py
 python -m spacy train config.cfg --output ./output --paths.train ./train.spacy --paths.dev ./train.spacy
 python -m spacy evaluate output/model-best train.spacy
 python classify.py

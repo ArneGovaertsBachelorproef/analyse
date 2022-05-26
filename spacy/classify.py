@@ -1,4 +1,4 @@
-import spacy, sqlite3, csv, re, string
+import spacy, sqlite3, csv, re, string, math
 
 def preprocess_text(text): # verschil tussen tok2vec v1 en v2
     text = text.lower().strip()
@@ -14,61 +14,127 @@ def preprocess_text(text): # verschil tussen tok2vec v1 en v2
 
 nlp = spacy.load('output/model-best')
 
-with open('test.csv', newline='', encoding='utf-8') as csvfile1:
-    with open('resultaat.csv', 'w', newline='', encoding='utf-8') as csvfile2:
-        csvreader = csv.reader(csvfile1, delimiter=';', quotechar='"')
+db_file = '../elderspeak_detect.db'
+con = sqlite3.connect(db_file)
+cur = con.cursor()
 
-        csvwriter = csv.writer(csvfile2, delimiter=';', quoting=csv.QUOTE_MINIMAL, quotechar='"')
-        csvwriter.writerow(['tekst', 'elderspeak', 'echte_waarde'])
+cur.execute('''select t.audio_id, t.tekst, td.elderspeak
+from teksten t
+join test_data td on td.audio_id = t.audio_id
+where t.methode = 'GOOGLE_ENKEL_NL_BE';''')
+data = cur.fetchall()
 
-        totaal_TP = 0
-        totaal_TN = 0
-        totaal_FP = 0
-        totaal_FN = 0
-        totaal    = 0
-        precisie  = 0
-        recall    = 0
-        f_measure = 0
+with open('resultaat.csv', 'w', newline='', encoding='utf-8') as csvfile2:
+    csvwriter = csv.writer(csvfile2, delimiter=';', quoting=csv.QUOTE_MINIMAL, quotechar='"')
+    csvwriter.writerow(['tekst', 'elderspeak', 'echte_waarde'])
 
-        for rij in csvreader:
-            doc = nlp(preprocess_text(rij[0]))
+    totaal_TP = 0
+    totaal_TN = 0
+    totaal_FP = 0
+    totaal_FN = 0
+    totaal    = 0
+    precisie  = 0
+    recall    = 0
+    f_measure = 0
 
-            echte_waarde = int(rij[1]) == 1
-            waarde = doc.cats['elderspeak'] > 0.5
-            csvwriter.writerow([rij[0], int(waarde), int(echte_waarde)])
+    for rij in data:
+        doc = nlp(preprocess_text(rij[1]))
+        echte_waarde = int(rij[2]) == 1
+        waarde = doc.cats['elderspeak'] > 0.5
+        csvwriter.writerow([rij[1], int(waarde), int(echte_waarde)])
 
-            totaal += 1
+        totaal += 1
 
-            if waarde == True and echte_waarde == True:
-                totaal_TP += 1
-            else:
-                if waarde == False and echte_waarde == False:
-                    totaal_TN += 1
-                else:
-                    if waarde == True and echte_waarde == False:
-                        totaal_FP += 1
-                    else:
-                        totaal_FN += 1
+        if waarde == True and echte_waarde == True:
+            totaal_TP += 1
+        elif waarde == False and echte_waarde == False:
+            totaal_TN += 1
+        elif waarde == True and echte_waarde == False:
+            totaal_FP += 1
+        else:
+            totaal_FN += 1
 
-        csvwriter.writerow([])
-        csvwriter.writerow(['totaal_TP', totaal_TP])
-        csvwriter.writerow(['totaal_TN', totaal_TN])
-        csvwriter.writerow(['totaal_FP', totaal_FP])
-        csvwriter.writerow(['totaal_FN', totaal_FN])
-        csvwriter.writerow(['totaal', totaal])
-        csvwriter.writerow([])
+    csvwriter.writerow([])
+    csvwriter.writerow(['totaal_TP', totaal_TP])
+    csvwriter.writerow(['totaal_TN', totaal_TN])
+    csvwriter.writerow(['totaal_FP', totaal_FP])
+    csvwriter.writerow(['totaal_FN', totaal_FN])
+    csvwriter.writerow(['totaal', totaal])
+    csvwriter.writerow([])
 
-        if (totaal_TP + totaal_FP) != 0:
-            precisie  = totaal_TP * 1.0 / (totaal_TP + totaal_FP)
-            csvwriter.writerow(['precisie', precisie])
+    if (totaal_TP + totaal_FP) != 0:
+        precisie  = totaal_TP * 1.0 / (totaal_TP + totaal_FP)
+        csvwriter.writerow(['precisie', precisie])
 
-        if (totaal_TP + totaal_FN) != 0:
-            recall    = totaal_TP * 1.0 / (totaal_TP + totaal_FN)
-            csvwriter.writerow(['recall', recall])
+    if (totaal_TP + totaal_FN) != 0:
+        recall    = totaal_TP * 1.0 / (totaal_TP + totaal_FN)
+        csvwriter.writerow(['recall', recall])
         
-        if (precisie + recall) != 0:
-            f_measure = (2 * precisie * recall) / (precisie + recall)
-            csvwriter.writerow(['F measure', f_measure])
+    if (precisie + recall) != 0:
+        f_measure = (2 * precisie * recall) / (precisie + recall)
+        csvwriter.writerow(['F measure', f_measure])
+
+    mcc = (totaal_TP * totaal_TN - totaal_FP * totaal_FN) / (math.sqrt((totaal_TP + totaal_FP) * (totaal_TP + totaal_FN) * (totaal_TN + totaal_FP) * (totaal_TN + totaal_FN)))
+    csvwriter.writerow(['MCC', mcc])
+
+    j = (totaal_TP / (totaal_TP + totaal_FN)) + (totaal_TN / (totaal_TN + totaal_FP)) - 1
+    csvwriter.writerow(["Youden's J", j])
+
+# with open('test.csv', newline='', encoding='utf-8') as csvfile1:
+#     with open('resultaat.csv', 'w', newline='', encoding='utf-8') as csvfile2:
+#         csvreader = csv.reader(csvfile1, delimiter=';', quotechar='"')
+
+#         csvwriter = csv.writer(csvfile2, delimiter=';', quoting=csv.QUOTE_MINIMAL, quotechar='"')
+#         csvwriter.writerow(['tekst', 'elderspeak', 'echte_waarde'])
+
+#         totaal_TP = 0
+#         totaal_TN = 0
+#         totaal_FP = 0
+#         totaal_FN = 0
+#         totaal    = 0
+#         precisie  = 0
+#         recall    = 0
+#         f_measure = 0
+
+#         for rij in csvreader:
+#             doc = nlp(preprocess_text(rij[0]))
+
+#             echte_waarde = int(rij[1]) == 1
+#             waarde = doc.cats['elderspeak'] > 0.5
+#             csvwriter.writerow([rij[0], int(waarde), int(echte_waarde)])
+
+#             totaal += 1
+
+#             if waarde == True and echte_waarde == True:
+#                 totaal_TP += 1
+#             else:
+#                 if waarde == False and echte_waarde == False:
+#                     totaal_TN += 1
+#                 else:
+#                     if waarde == True and echte_waarde == False:
+#                         totaal_FP += 1
+#                     else:
+#                         totaal_FN += 1
+
+#         csvwriter.writerow([])
+#         csvwriter.writerow(['totaal_TP', totaal_TP])
+#         csvwriter.writerow(['totaal_TN', totaal_TN])
+#         csvwriter.writerow(['totaal_FP', totaal_FP])
+#         csvwriter.writerow(['totaal_FN', totaal_FN])
+#         csvwriter.writerow(['totaal', totaal])
+#         csvwriter.writerow([])
+
+#         if (totaal_TP + totaal_FP) != 0:
+#             precisie  = totaal_TP * 1.0 / (totaal_TP + totaal_FP)
+#             csvwriter.writerow(['precisie', precisie])
+
+#         if (totaal_TP + totaal_FN) != 0:
+#             recall    = totaal_TP * 1.0 / (totaal_TP + totaal_FN)
+#             csvwriter.writerow(['recall', recall])
+        
+#         if (precisie + recall) != 0:
+#             f_measure = (2 * precisie * recall) / (precisie + recall)
+#             csvwriter.writerow(['F measure', f_measure])
 
 
 # db_file = '../elderspeak_detect.db'

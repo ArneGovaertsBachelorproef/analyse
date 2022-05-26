@@ -42,7 +42,7 @@ def maak_connectie(db_file: str) -> sqlite3.Connection:
 
     con = None
     try:
-        con = sqlite3.connect(db_file, 120.0)
+        con = sqlite3.connect(db_file, 240.0)
     except Error as e:
         logging.error(e)
     return con

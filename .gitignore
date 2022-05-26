@@ -144,3 +144,4 @@ vosk*
 spacy/output
 spacy/config.cfg
 spacy/*.spacy
+*.zip
