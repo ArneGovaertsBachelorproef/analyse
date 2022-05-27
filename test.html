@@ -14794,6 +14794,636 @@ Aantal rijen: 47
 
 </div>
 
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<hr>
+
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">reg</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s2">&quot;elderspeak ~ spraaksnelheid + geluidsniveau + toonhoogte&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="n">reg</span><span class="o">.</span><span class="n">params</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[&nbsp;]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>Intercept        -0.682542
+spraaksnelheid   -0.154075
+geluidsniveau     0.016376
+toonhoogte        0.002186
+dtype: float64</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">reg</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s2">&quot;elderspeak ~ cilt + woordlengteratio + aantal_collectieve_voornaamwoorden + aantal_verkleinwoorden + aantal_herhalingen&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="n">reg</span><span class="o">.</span><span class="n">params</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[&nbsp;]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>Intercept                             0.641273
+cilt                                 -0.004738
+woordlengteratio                      0.603489
+aantal_collectieve_voornaamwoorden   -0.045982
+aantal_verkleinwoorden               -0.033458
+aantal_herhalingen                    0.070305
+dtype: float64</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">reg</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s2">&quot;elderspeak ~ spraaksnelheid + geluidsniveau + toonhoogte + cilt + woordlengteratio + aantal_collectieve_voornaamwoorden + aantal_verkleinwoorden + aantal_herhalingen + textcat_elderspeak_score&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="n">reg</span><span class="o">.</span><span class="n">params</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[&nbsp;]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>Intercept                            -0.338043
+spraaksnelheid                       -0.113442
+geluidsniveau                         0.011385
+toonhoogte                            0.001475
+cilt                                 -0.004189
+woordlengteratio                     -0.120754
+aantal_collectieve_voornaamwoorden   -0.032410
+aantal_verkleinwoorden                0.032736
+aantal_herhalingen                    0.020968
+textcat_elderspeak_score              0.631851
+dtype: float64</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<hr>
+
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;reg_model_praat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.682542</span> <span class="o">-</span><span class="mf">0.154075</span> <span class="o">*</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;spraaksnelheid&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.016376</span> <span class="o">*</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;geluidsniveau&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.002186</span> <span class="o">*</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;toonhoogte&#39;</span><span class="p">]</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;reg_model_tekst&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.641273</span> <span class="o">-</span><span class="mf">0.004738</span> <span class="o">*</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;cilt&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.603489</span> <span class="o">*</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;woordlengteratio&#39;</span><span class="p">]</span> <span class="o">-</span><span class="mf">0.045982</span> <span class="o">*</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;aantal_collectieve_voornaamwoorden&#39;</span><span class="p">]</span> <span class="o">-</span><span class="mf">0.033458</span> <span class="o">*</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;aantal_verkleinwoorden&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.070305</span> <span class="o">*</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;aantal_herhalingen&#39;</span><span class="p">]</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;reg_model_volledig&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.338043</span> <span class="o">-</span><span class="mf">0.113442</span> <span class="o">*</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;spraaksnelheid&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.011385</span> <span class="o">*</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;geluidsniveau&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.001475</span> <span class="o">*</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;toonhoogte&#39;</span><span class="p">]</span> <span class="o">-</span><span class="mf">0.004189</span> <span class="o">*</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;cilt&#39;</span><span class="p">]</span> <span class="o">-</span><span class="mf">0.120754</span> <span class="o">*</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;woordlengteratio&#39;</span><span class="p">]</span> <span class="o">-</span><span class="mf">0.032410</span> <span class="o">*</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;aantal_collectieve_voornaamwoorden&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.032736</span> <span class="o">*</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;aantal_verkleinwoorden&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.020968</span> <span class="o">*</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;aantal_herhalingen&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.631851</span> <span class="o">*</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;textcat_elderspeak_score&#39;</span><span class="p">]</span>         
+
+<span class="n">df</span><span class="p">[[</span><span class="s1">&#39;elderspeak&#39;</span><span class="p">,</span> <span class="s1">&#39;textcat_elderspeak_score&#39;</span><span class="p">,</span> <span class="s1">&#39;reg_model_praat&#39;</span><span class="p">,</span> <span class="s1">&#39;reg_model_tekst&#39;</span><span class="p">,</span> <span class="s1">&#39;reg_model_volledig&#39;</span><span class="p">]]</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[&nbsp;]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>elderspeak</th>
+      <th>textcat_elderspeak_score</th>
+      <th>reg_model_praat</th>
+      <th>reg_model_tekst</th>
+      <th>reg_model_volledig</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>1.492628e-10</td>
+      <td>0.470329</td>
+      <td>0.359381</td>
+      <td>0.127765</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>5.497069e-06</td>
+      <td>0.740600</td>
+      <td>0.429100</td>
+      <td>0.423556</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0</td>
+      <td>6.963545e-07</td>
+      <td>0.308622</td>
+      <td>0.363723</td>
+      <td>0.089986</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0</td>
+      <td>2.806736e-05</td>
+      <td>0.180474</td>
+      <td>0.717499</td>
+      <td>0.212633</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0</td>
+      <td>7.241415e-06</td>
+      <td>0.467125</td>
+      <td>0.362286</td>
+      <td>0.131557</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>1</td>
+      <td>6.058949e-05</td>
+      <td>0.205637</td>
+      <td>0.278221</td>
+      <td>0.158393</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>0</td>
+      <td>9.893542e-10</td>
+      <td>0.505150</td>
+      <td>0.267387</td>
+      <td>0.141166</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>0</td>
+      <td>1.449370e-02</td>
+      <td>0.492853</td>
+      <td>0.429835</td>
+      <td>0.156388</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>1</td>
+      <td>1.946689e-03</td>
+      <td>0.588510</td>
+      <td>0.431145</td>
+      <td>0.339568</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>1</td>
+      <td>9.999999e-01</td>
+      <td>0.641194</td>
+      <td>0.581487</td>
+      <td>1.087465</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>0</td>
+      <td>1.799652e-07</td>
+      <td>0.336121</td>
+      <td>0.331631</td>
+      <td>0.104039</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>1</td>
+      <td>1.000000e+00</td>
+      <td>0.561459</td>
+      <td>0.386736</td>
+      <td>0.962166</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>0</td>
+      <td>1.909542e-03</td>
+      <td>0.455485</td>
+      <td>0.348453</td>
+      <td>0.100614</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>1</td>
+      <td>7.815228e-04</td>
+      <td>0.392451</td>
+      <td>0.507617</td>
+      <td>0.337252</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>1</td>
+      <td>1.000000e+00</td>
+      <td>0.563268</td>
+      <td>0.433406</td>
+      <td>0.910897</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>0</td>
+      <td>1.333404e-03</td>
+      <td>0.354037</td>
+      <td>0.257563</td>
+      <td>0.103856</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>0</td>
+      <td>2.874842e-07</td>
+      <td>0.578989</td>
+      <td>0.254221</td>
+      <td>0.228866</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>0</td>
+      <td>8.234085e-11</td>
+      <td>0.147196</td>
+      <td>0.572319</td>
+      <td>0.032711</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>0</td>
+      <td>6.649797e-06</td>
+      <td>0.461301</td>
+      <td>0.513211</td>
+      <td>0.279516</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>1</td>
+      <td>9.982306e-01</td>
+      <td>0.345245</td>
+      <td>0.259101</td>
+      <td>0.687906</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>0</td>
+      <td>9.992041e-01</td>
+      <td>0.435058</td>
+      <td>0.448492</td>
+      <td>0.817198</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>0</td>
+      <td>3.851894e-06</td>
+      <td>0.289190</td>
+      <td>0.229405</td>
+      <td>0.087322</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>0</td>
+      <td>1.233303e-11</td>
+      <td>0.311159</td>
+      <td>0.257718</td>
+      <td>0.034395</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>0</td>
+      <td>2.324891e-06</td>
+      <td>0.071862</td>
+      <td>0.254421</td>
+      <td>-0.074185</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>1</td>
+      <td>1.000000e+00</td>
+      <td>0.298876</td>
+      <td>0.458302</td>
+      <td>0.959450</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>1</td>
+      <td>9.931636e-01</td>
+      <td>0.462966</td>
+      <td>0.270767</td>
+      <td>0.745433</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>0</td>
+      <td>3.488684e-04</td>
+      <td>0.495693</td>
+      <td>0.632381</td>
+      <td>0.473252</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>0</td>
+      <td>6.657302e-10</td>
+      <td>0.173289</td>
+      <td>0.238267</td>
+      <td>0.021565</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>1</td>
+      <td>1.000000e+00</td>
+      <td>0.590950</td>
+      <td>0.413713</td>
+      <td>0.923128</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>0</td>
+      <td>2.514670e-08</td>
+      <td>0.215697</td>
+      <td>0.569761</td>
+      <td>0.165777</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>0</td>
+      <td>8.560129e-08</td>
+      <td>0.400407</td>
+      <td>0.158562</td>
+      <td>0.140721</td>
+    </tr>
+    <tr>
+      <th>31</th>
+      <td>0</td>
+      <td>1.360664e-09</td>
+      <td>0.300849</td>
+      <td>0.284071</td>
+      <td>0.200330</td>
+    </tr>
+    <tr>
+      <th>32</th>
+      <td>0</td>
+      <td>2.888697e-09</td>
+      <td>0.265324</td>
+      <td>0.371749</td>
+      <td>0.010589</td>
+    </tr>
+    <tr>
+      <th>33</th>
+      <td>0</td>
+      <td>9.995882e-01</td>
+      <td>0.408590</td>
+      <td>0.334147</td>
+      <td>0.756422</td>
+    </tr>
+    <tr>
+      <th>34</th>
+      <td>1</td>
+      <td>9.995782e-01</td>
+      <td>0.258781</td>
+      <td>0.496022</td>
+      <td>0.802164</td>
+    </tr>
+    <tr>
+      <th>35</th>
+      <td>1</td>
+      <td>9.999998e-01</td>
+      <td>0.296625</td>
+      <td>0.501338</td>
+      <td>0.758773</td>
+    </tr>
+    <tr>
+      <th>36</th>
+      <td>0</td>
+      <td>7.209262e-03</td>
+      <td>0.427324</td>
+      <td>0.325899</td>
+      <td>0.154071</td>
+    </tr>
+    <tr>
+      <th>37</th>
+      <td>0</td>
+      <td>3.539525e-05</td>
+      <td>0.462169</td>
+      <td>0.312699</td>
+      <td>0.295817</td>
+    </tr>
+    <tr>
+      <th>38</th>
+      <td>1</td>
+      <td>1.000000e+00</td>
+      <td>0.523853</td>
+      <td>0.384143</td>
+      <td>0.768908</td>
+    </tr>
+    <tr>
+      <th>39</th>
+      <td>0</td>
+      <td>1.292956e-08</td>
+      <td>0.349928</td>
+      <td>0.182970</td>
+      <td>0.111815</td>
+    </tr>
+    <tr>
+      <th>40</th>
+      <td>1</td>
+      <td>3.924295e-04</td>
+      <td>0.266798</td>
+      <td>0.437544</td>
+      <td>0.007674</td>
+    </tr>
+    <tr>
+      <th>41</th>
+      <td>1</td>
+      <td>9.999995e-01</td>
+      <td>0.445832</td>
+      <td>0.329136</td>
+      <td>0.873847</td>
+    </tr>
+    <tr>
+      <th>42</th>
+      <td>0</td>
+      <td>7.054659e-10</td>
+      <td>0.274193</td>
+      <td>0.415890</td>
+      <td>0.201885</td>
+    </tr>
+    <tr>
+      <th>43</th>
+      <td>1</td>
+      <td>1.000000e+00</td>
+      <td>0.461281</td>
+      <td>0.698657</td>
+      <td>0.952766</td>
+    </tr>
+    <tr>
+      <th>44</th>
+      <td>0</td>
+      <td>2.404300e-06</td>
+      <td>0.283614</td>
+      <td>0.399504</td>
+      <td>0.163294</td>
+    </tr>
+    <tr>
+      <th>45</th>
+      <td>0</td>
+      <td>0.000000e+00</td>
+      <td>-0.290681</td>
+      <td>0.042522</td>
+      <td>0.039576</td>
+    </tr>
+    <tr>
+      <th>46</th>
+      <td>1</td>
+      <td>1.000000e+00</td>
+      <td>0.728358</td>
+      <td>0.468815</td>
+      <td>0.989607</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<hr>
+
+</div>
+</div>
+</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -14825,18 +15455,6 @@ Aantal rijen: 47
 </div>
 </div>
 
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<hr>
-
-</div>
-</div>
-</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -14848,14 +15466,16 @@ Aantal rijen: 47
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">elderspeak</span> <span class="o">=</span> <span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;elderspeak&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)]</span>
 <span class="n">not_elderspeak</span> <span class="o">=</span> <span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;elderspeak&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)]</span>
 
-<span class="n">cd_dict</span> <span class="o">=</span> <span class="p">{</span>
+<span class="n">wt_cd_dict</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;kenmerk&#39;</span><span class="p">:</span> <span class="p">[],</span>
     <span class="s1">&#39;d&#39;</span><span class="p">:</span> <span class="p">[],</span>
-    <span class="s1">&#39;effect&#39;</span><span class="p">:</span> <span class="p">[]</span>
+    <span class="s1">&#39;effect&#39;</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="s1">&#39;p&#39;</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="s1">&#39;significant&#39;</span><span class="p">:</span> <span class="p">[]</span>
 <span class="p">}</span>
 
-<span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;spraaksnelheid&#39;</span><span class="p">,</span> <span class="s1">&#39;geluidsniveau&#39;</span><span class="p">,</span> <span class="s1">&#39;toonhoogte&#39;</span><span class="p">,</span> <span class="s1">&#39;cilt&#39;</span><span class="p">,</span> <span class="s1">&#39;woordlengteratio&#39;</span><span class="p">,</span> <span class="s1">&#39;aantal_collectieve_voornaamwoorden&#39;</span><span class="p">,</span> <span class="s1">&#39;aantal_verkleinwoorden&#39;</span><span class="p">,</span> <span class="s1">&#39;aantal_herhalingen&#39;</span><span class="p">,</span> <span class="s1">&#39;textcat_elderspeak_score&#39;</span><span class="p">]:</span>
-    <span class="n">d</span> <span class="o">=</span> <span class="n">cohend</span><span class="p">(</span><span class="n">elderspeak</span><span class="p">[</span><span class="n">c</span><span class="p">],</span> <span class="n">not_elderspeak</span><span class="p">[</span><span class="n">c</span><span class="p">])</span>
+<span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="p">[(</span><span class="s1">&#39;spraaksnelheid&#39;</span><span class="p">,</span> <span class="s1">&#39;less&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;geluidsniveau&#39;</span><span class="p">,</span><span class="s1">&#39;greater&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;toonhoogte&#39;</span><span class="p">,</span> <span class="s1">&#39;greater&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;cilt&#39;</span><span class="p">,</span> <span class="s1">&#39;less&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;woordlengteratio&#39;</span><span class="p">,</span> <span class="s1">&#39;less&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;aantal_collectieve_voornaamwoorden&#39;</span><span class="p">,</span> <span class="s1">&#39;greater&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;aantal_verkleinwoorden&#39;</span><span class="p">,</span> <span class="s1">&#39;greater&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;aantal_herhalingen&#39;</span><span class="p">,</span> <span class="s1">&#39;greater&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;textcat_elderspeak_score&#39;</span><span class="p">,</span> <span class="s1">&#39;greater&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;reg_model_praat&#39;</span><span class="p">,</span> <span class="s1">&#39;greater&#39;</span><span class="p">)]:</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">cohend</span><span class="p">(</span><span class="n">elderspeak</span><span class="p">[</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="n">not_elderspeak</span><span class="p">[</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
     <span class="n">abs_d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
     
     <span class="k">if</span> <span class="n">abs_d</span> <span class="o">&lt;=</span> <span class="mf">0.01</span><span class="p">:</span>
@@ -14871,12 +15491,20 @@ Aantal rijen: 47
     <span class="k">else</span><span class="p">:</span>
         <span class="n">effect</span> <span class="o">=</span> <span class="s1">&#39;reusachtig&#39;</span>
 
-    <span class="n">cd_dict</span><span class="p">[</span><span class="s1">&#39;kenmerk&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> 
-    <span class="n">cd_dict</span><span class="p">[</span><span class="s1">&#39;d&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> 
-    <span class="n">cd_dict</span><span class="p">[</span><span class="s1">&#39;effect&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">effect</span><span class="p">)</span> 
+    <span class="n">wt_cd_dict</span><span class="p">[</span><span class="s1">&#39;kenmerk&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> 
+    <span class="n">wt_cd_dict</span><span class="p">[</span><span class="s1">&#39;d&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> 
+    <span class="n">wt_cd_dict</span><span class="p">[</span><span class="s1">&#39;effect&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">effect</span><span class="p">)</span> 
+    
+    <span class="n">p</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">ttest_ind</span><span class="p">(</span><span class="n">elderspeak</span><span class="p">[</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="n">not_elderspeak</span><span class="p">[</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="n">alternative</span><span class="o">=</span><span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">equal_var</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">wt_cd_dict</span><span class="p">[</span><span class="s1">&#39;p&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
 
-<span class="n">df_cd</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">cd_dict</span><span class="p">)</span>
-<span class="n">df_cd</span>
+    <span class="k">if</span> <span class="n">p</span> <span class="o">&lt;</span> <span class="mf">0.05</span><span class="p">:</span>
+        <span class="n">wt_cd_dict</span><span class="p">[</span><span class="s1">&#39;significant&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;statistisch significant &#39;</span> <span class="o">+</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">wt_cd_dict</span><span class="p">[</span><span class="s1">&#39;significant&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;niet statistisch significant &#39;</span> <span class="o">+</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="n">wt_cd_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">wt_cd_dict</span><span class="p">)</span>
+<span class="n">wt_cd_df</span>
 </pre></div>
 
      </div>
@@ -14920,6 +15548,8 @@ Aantal rijen: 47
       <th>kenmerk</th>
       <th>d</th>
       <th>effect</th>
+      <th>p</th>
+      <th>significant</th>
     </tr>
   </thead>
   <tbody>
@@ -14928,54 +15558,80 @@ Aantal rijen: 47
       <td>spraaksnelheid</td>
       <td>-0.061360</td>
       <td>klein</td>
+      <td>0.423803</td>
+      <td>niet statistisch significant less</td>
     </tr>
     <tr>
       <th>1</th>
       <td>geluidsniveau</td>
       <td>0.412075</td>
       <td>middelmatig</td>
+      <td>0.048855</td>
+      <td>statistisch significant greater</td>
     </tr>
     <tr>
       <th>2</th>
       <td>toonhoogte</td>
       <td>0.488279</td>
       <td>middelmatig</td>
+      <td>0.068574</td>
+      <td>niet statistisch significant greater</td>
     </tr>
     <tr>
       <th>3</th>
       <td>cilt</td>
       <td>0.190854</td>
       <td>klein</td>
+      <td>0.782462</td>
+      <td>niet statistisch significant less</td>
     </tr>
     <tr>
       <th>4</th>
       <td>woordlengteratio</td>
       <td>0.227493</td>
       <td>middelmatig</td>
+      <td>0.825094</td>
+      <td>niet statistisch significant less</td>
     </tr>
     <tr>
       <th>5</th>
       <td>aantal_collectieve_voornaamwoorden</td>
       <td>-0.109957</td>
       <td>klein</td>
+      <td>0.642574</td>
+      <td>niet statistisch significant greater</td>
     </tr>
     <tr>
       <th>6</th>
       <td>aantal_verkleinwoorden</td>
       <td>0.092747</td>
       <td>klein</td>
+      <td>0.384790</td>
+      <td>niet statistisch significant greater</td>
     </tr>
     <tr>
       <th>7</th>
       <td>aantal_herhalingen</td>
       <td>0.353327</td>
       <td>middelmatig</td>
+      <td>0.132229</td>
+      <td>niet statistisch significant greater</td>
     </tr>
     <tr>
       <th>8</th>
       <td>textcat_elderspeak_score</td>
       <td>1.872398</td>
       <td>reusachtig</td>
+      <td>0.000006</td>
+      <td>statistisch significant greater</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>reg_model_praat</td>
+      <td>0.788455</td>
+      <td>groot</td>
+      <td>0.005734</td>
+      <td>statistisch significant greater</td>
     </tr>
   </tbody>
 </table>
